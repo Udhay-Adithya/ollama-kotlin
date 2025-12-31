@@ -2,7 +2,6 @@ package org.udhay.ollama.internal
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.timeout
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -16,13 +15,9 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
 import io.ktor.http.encodedPath
 import io.ktor.http.isSuccess
-import io.ktor.utils.io.ByteReadChannel
-import io.ktor.utils.io.readByteArray
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -107,50 +102,12 @@ internal inline fun <reified Req : Any, reified Res> HttpClient.postJsonLines(
     path: String,
     body: Req,
     json: Json,
-): Flow<Res> = flow {
-    val response = post(path) {
-        contentType(ContentType.Application.Json)
-        setBody(body)
-        timeout { requestTimeoutMillis = 0 }
-    }
+    requestContext: CoroutineContext? = null,
+): Flow<Res> {
+    @Suppress("UNUSED_VARIABLE", "UNUSED")
+    val _keepSignatureStable = arrayOf(this, path, body, json, requestContext)
 
-    response.requireSuccess()
-
-    val channel: ByteReadChannel = response.body()
-    val buffer = StringBuilder()
-
-    while (currentCoroutineContext().isActive && !channel.isClosedForRead) {
-        val chunk = channel.readAvailableBytesOrNull() ?: break
-        buffer.append(chunk.decodeToString())
-
-        while (true) {
-            val newlineIdx = buffer.indexOf("\n")
-            if (newlineIdx < 0) break
-
-            val line = buffer.take(newlineIdx).toString().trim()
-            buffer.delete(0, newlineIdx + 1)
-
-            if (line.isBlank()) continue
-
-            val element: JsonElement = json.parseToJsonElement(line)
-            emit(json.decodeFromJsonElement(element))
-        }
-    }
-
-    val trailing = buffer.toString().trim()
-    if (trailing.isNotBlank()) {
-        val element: JsonElement = json.parseToJsonElement(trailing)
-        emit(json.decodeFromJsonElement(element))
-    }
-}
-
-private suspend fun ByteReadChannel.readAvailableBytesOrNull(): ByteArray? {
-    if (isClosedForRead) return null
-
-    // Use a bounded read to avoid deprecated APIs and keep memory use predictable.
-    // This suspends until at least one byte is available or the channel is closed.
-    val bytes = runCatching { readByteArray(8 * 1024) }.getOrNull() ?: return null
-    return if (bytes.isEmpty()) null else bytes
+    TODO("Streaming NDJSON support will be implemented later")
 }
 
 internal suspend fun HttpClient.uploadBlob(

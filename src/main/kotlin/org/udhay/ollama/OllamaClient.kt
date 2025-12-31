@@ -1,6 +1,7 @@
 package org.udhay.ollama
 
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -13,6 +14,7 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
@@ -54,8 +56,12 @@ import java.nio.file.Path
 
 class OllamaClient(
     config: OllamaClientConfig = OllamaClientConfig(),
+    engine: HttpClientEngine? = null,
 ) {
     private var scope = CoroutineScope(SupervisorJob())
+
+    private fun currentStreamJob(): Job = scope.coroutineContext[Job]
+        ?: error("Streaming scope Job is missing")
 
     private val baseHost: String = (config.host ?: OllamaEnv.host() ?: "http://127.0.0.1:11434").trimEnd('/')
 
@@ -71,13 +77,25 @@ class OllamaClient(
         }
     }
 
-    internal val httpClient: HttpClient = HttpClient(CIO) {
-        install(ContentNegotiation) {
-            json(DefaultJson)
+    internal val httpClient: HttpClient = if (engine == null) {
+        HttpClient(CIO) {
+            install(ContentNegotiation) {
+                json(DefaultJson)
+            }
+            defaultRequest {
+                url.takeFrom(baseHost)
+                resolvedHeaders.forEach { (k, v) -> headers.append(k, v) }
+            }
         }
-        defaultRequest {
-            url.takeFrom(baseHost)
-            resolvedHeaders.forEach { (k, v) -> headers.append(k, v) }
+    } else {
+        HttpClient(engine) {
+            install(ContentNegotiation) {
+                json(DefaultJson)
+            }
+            defaultRequest {
+                url.takeFrom(baseHost)
+                resolvedHeaders.forEach { (k, v) -> headers.append(k, v) }
+            }
         }
     }
 
@@ -98,14 +116,24 @@ class OllamaClient(
 
     fun chatStreaming(request: ChatRequest): Flow<ChatResponse> {
         val body = if (request.stream == true) request else request.copy(stream = true)
-        return httpClient.postJsonLines("/api/chat", body, DefaultJson)
+        return httpClient.postJsonLines(
+            "/api/chat",
+            body,
+            DefaultJson,
+            requestContext = currentStreamJob(),
+        )
     }
 
     suspend fun generate(request: GenerateRequest): GenerateResponse = postJsonOrNdjsonLast("/api/generate", request)
 
     fun generateStreaming(request: GenerateRequest): Flow<GenerateResponse> {
         val body = if (request.stream == true) request else request.copy(stream = true)
-        return httpClient.postJsonLines("/api/generate", body, DefaultJson)
+        return httpClient.postJsonLines(
+            "/api/generate",
+            body,
+            DefaultJson,
+            requestContext = currentStreamJob(),
+        )
     }
 
     suspend fun embed(request: EmbedRequest): EmbedResponse = httpClient.postJson("/api/embed", request)
@@ -122,21 +150,36 @@ class OllamaClient(
 
     fun createStreaming(request: CreateRequest): Flow<ProgressResponse> {
         val body = if (request.stream == true) request else request.copy(stream = true)
-        return httpClient.postJsonLines("/api/create", body, DefaultJson)
+        return httpClient.postJsonLines(
+            "/api/create",
+            body,
+            DefaultJson,
+            requestContext = currentStreamJob(),
+        )
     }
 
     suspend fun pull(request: PullRequest): ProgressResponse = postJsonOrNdjsonLast("/api/pull", request)
 
     fun pullStreaming(request: PullRequest): Flow<ProgressResponse> {
         val body = if (request.stream == true) request else request.copy(stream = true)
-        return httpClient.postJsonLines("/api/pull", body, DefaultJson)
+        return httpClient.postJsonLines(
+            "/api/pull",
+            body,
+            DefaultJson,
+            requestContext = currentStreamJob(),
+        )
     }
 
     suspend fun push(request: PushRequest): ProgressResponse = postJsonOrNdjsonLast("/api/push", request)
 
     fun pushStreaming(request: PushRequest): Flow<ProgressResponse> {
         val body = if (request.stream == true) request else request.copy(stream = true)
-        return httpClient.postJsonLines("/api/push", body, DefaultJson)
+        return httpClient.postJsonLines(
+            "/api/push",
+            body,
+            DefaultJson,
+            requestContext = currentStreamJob(),
+        )
     }
 
     /** Uploads a file to /api/blobs/{digest} and returns the digest. */
@@ -165,9 +208,7 @@ class OllamaClient(
     suspend fun webFetch(request: WebFetchRequest): WebFetchResponse = httpClient.postJson("/api/web_fetch", request)
 
     fun abortAllStreams() {
-        // Cancels any streaming flows tied to the current scope.
         scope.cancel("aborted")
-        // Prepare a fresh scope for future streams.
         scope = CoroutineScope(SupervisorJob())
     }
 
