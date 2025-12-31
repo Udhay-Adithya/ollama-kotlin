@@ -49,6 +49,7 @@ import org.udhay.ollama.internal.postJson
 import org.udhay.ollama.internal.postJsonLines
 import org.udhay.ollama.internal.requireSuccess
 import org.udhay.ollama.internal.uploadBlob
+import org.udhay.ollama.util.sha256DigestOf
 import java.nio.file.Path
 
 class OllamaClient(
@@ -140,6 +141,14 @@ class OllamaClient(
 
     /** Uploads a file to /api/blobs/{digest} and returns the digest. */
     suspend fun createBlob(digest: String, path: Path): String = httpClient.uploadBlob(digest, path)
+
+    /**
+     * Uploads a file to /api/blobs/{sha256:...} and returns the digest.
+     */
+    suspend fun createBlob(path: Path): String {
+        val digest = sha256DigestOf(path)
+        return createBlob(digest, path)
+    }
 
     suspend fun ps(): ProcessResponse = httpClient.getJson("/api/ps")
 

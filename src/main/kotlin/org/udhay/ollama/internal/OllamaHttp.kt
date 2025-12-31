@@ -18,10 +18,12 @@ import io.ktor.http.encodedPath
 import io.ktor.http.isSuccess
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readByteArray
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -155,7 +157,9 @@ internal suspend fun HttpClient.uploadBlob(
     digest: String,
     path: Path,
 ): String {
-    val bytes = Files.readAllBytes(path)
+    val bytes = withContext(Dispatchers.IO) {
+        Files.readAllBytes(path)
+    }
 
     val response = request {
         method = HttpMethod.Post
