@@ -36,6 +36,8 @@ data class GenerateResponse(
     val doneReason: String? = null,
     val context: List<Int>? = null,
     val error: String? = null,
+    val thinking: String? = null,
+    val logprobs: List<Logprob>? = null,
     @SerialName("total_duration")
     val totalDuration: Long? = null,
     @SerialName("load_duration")
@@ -49,4 +51,3 @@ data class GenerateResponse(
     @SerialName("eval_duration")
     val evalDuration: Long? = null,
 )
-

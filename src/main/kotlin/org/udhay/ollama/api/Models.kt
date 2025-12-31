@@ -34,8 +34,25 @@ data class ShowResponse(
     val parameters: String? = null,
     val template: String? = null,
     val system: String? = null,
-    val details: JsonElement? = null,
-    val model_info: JsonElement? = null,
+    val details: ModelDetails? = null,
+    val messages: List<Message>? = null,
+    @SerialName("modified_at")
+    val modifiedAt: String? = null,
+    @SerialName("model_info")
+    val modelInfo: JsonElement? = null,
+    val capabilities: List<String>? = null,
+    @SerialName("projector_info")
+    val projectorInfo: JsonElement? = null,
+)
+
+@Serializable
+data class ModelDetails(
+    val parent_model: String? = null,
+    val format: String? = null,
+    val family: String? = null,
+    val families: List<String>? = null,
+    val parameter_size: String? = null,
+    val quantization_level: String? = null,
 )
 
 @Serializable
@@ -92,4 +109,3 @@ data class ProgressResponse(
     val completed: Long? = null,
     val error: String? = null,
 )
-

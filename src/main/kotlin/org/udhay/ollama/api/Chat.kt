@@ -30,6 +30,8 @@ data class ChatResponse(
     @SerialName("done_reason")
     val doneReason: String? = null,
     val error: String? = null,
+    val thinking: String? = null,
+    val logprobs: List<Logprob>? = null,
     @SerialName("total_duration")
     val totalDuration: Long? = null,
     @SerialName("load_duration")
@@ -44,3 +46,16 @@ data class ChatResponse(
     val evalDuration: Long? = null,
 )
 
+@Serializable
+data class TokenLogprob(
+    val token: String,
+    val logprob: Double,
+)
+
+@Serializable
+data class Logprob(
+    val token: String,
+    val logprob: Double,
+    @SerialName("top_logprobs")
+    val topLogprobs: List<TokenLogprob>? = null,
+)
