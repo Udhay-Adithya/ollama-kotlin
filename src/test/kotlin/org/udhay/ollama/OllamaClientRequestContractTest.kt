@@ -40,7 +40,7 @@ class OllamaClientRequestContractTest {
             assertNotNull(tools)
 
             jsonResponse(
-                body = """{\"model\":\"llama3\",\"message\":{\"role\":\"assistant\",\"content\":\"ok\"},\"done\":true}""",
+                body = "{\"model\":\"llama3\",\"message\":{\"role\":\"assistant\",\"content\":\"ok\"},\"done\":true}",
             )
         }
 
@@ -78,7 +78,7 @@ class OllamaClientRequestContractTest {
             assertEquals("json", format.getValue("type").jsonPrimitive.content)
 
             jsonResponse(
-                body = """{\"model\":\"llama3\",\"response\":\"ok\",\"done\":true}""",
+                body = "{\"model\":\"llama3\",\"response\":\"ok\",\"done\":true}",
             )
         }
 
@@ -110,7 +110,7 @@ class OllamaClientRequestContractTest {
             assertEquals("hello", el.getValue("input").jsonPrimitive.content)
 
             jsonResponse(
-                body = """{\"model\":\"nomic-embed-text\",\"embeddings\":[[0.1,0.2]]}""",
+                body = "{\"model\":\"nomic-embed-text\",\"embeddings\":[[0.1,0.2]]}",
             )
         }
 
