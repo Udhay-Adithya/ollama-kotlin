@@ -6,18 +6,26 @@ import java.nio.file.Path
 import java.security.MessageDigest
 
 /**
- * `sha256:<hex>` digest of the file contents.
+ * Computes the `sha256:<hex>` digest of a file.
+ *
+ * The file is read in chunks to handle large files without excessive memory use.
+ *
+ * @param path Path to the file.
+ * @return A string in the format `"sha256:<64-char hex>"` (e.g. `"sha256:ba7816..."`).
  */
-fun sha256DigestOf(path: Path): String {
+public fun sha256DigestOf(path: Path): String {
     Files.newInputStream(path).use { input ->
         return sha256DigestOf(input)
     }
 }
 
 /**
- * `sha256:<hex>` digest of the bytes streamed from [input].
+ * Computes the `sha256:<hex>` digest of bytes read from [input].
+ *
+ * @param input An [InputStream] to read.
+ * @return A string in the format `"sha256:<64-char hex>"`.
  */
-fun sha256DigestOf(input: InputStream): String {
+public fun sha256DigestOf(input: InputStream): String {
     val md = MessageDigest.getInstance("SHA-256")
     val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
     while (true) {

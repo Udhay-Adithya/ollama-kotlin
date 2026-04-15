@@ -3,15 +3,26 @@ package org.udhay.ollama.api
 import kotlinx.serialization.json.JsonObject
 
 /**
- * Convenience helpers for tool calling.
+ * Extension to extract all [ToolCall]s from a [ChatResponse].
+ *
+ * Returns an empty list if the assistant message contains no tool calls.
  */
-val ChatResponse.toolCalls: List<ToolCall>
+public val ChatResponse.toolCalls: List<ToolCall>
     get() = message?.toolCalls.orEmpty()
 
-val Message.hasToolCalls: Boolean
+/**
+ * `true` if this [Message] contains one or more tool call requests.
+ */
+public val Message.hasToolCalls: Boolean
     get() = !toolCalls.isNullOrEmpty()
 
-fun ToolCall.functionName(): String? = function?.name
+/**
+ * Returns the name of the function this tool call invokes, or `null`.
+ */
+public fun ToolCall.functionName(): String? = function?.name
 
-fun ToolCall.argumentsObject(): JsonObject? = function?.arguments as? JsonObject
+/**
+ * Returns the function arguments as a [JsonObject], or `null` if absent or not an object.
+ */
+public fun ToolCall.argumentsObject(): JsonObject? = function?.arguments as? JsonObject
 

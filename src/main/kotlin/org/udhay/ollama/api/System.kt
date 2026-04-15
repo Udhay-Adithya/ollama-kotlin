@@ -2,15 +2,31 @@ package org.udhay.ollama.api
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
 
+/**
+ * Response from `GET /api/ps` listing models currently loaded in memory.
+ *
+ * @property models The list of currently running (loaded) models.
+ */
 @Serializable
-data class ProcessResponse(
+public data class ProcessResponse(
     val models: List<ProcessModel> = emptyList(),
 )
 
+/**
+ * A model that is currently loaded in memory and ready for inference.
+ *
+ * @property name Full tag name of the running model.
+ * @property model Base model identifier.
+ * @property size Total model size in bytes.
+ * @property sizeVram Amount of VRAM used by the model in bytes.
+ * @property digest Content-addressable digest.
+ * @property expiresAt ISO-8601 timestamp when this model will be unloaded.
+ * @property details Architecture details of the model.
+ * @property contextLength Maximum context length configured for this model.
+ */
 @Serializable
-data class ProcessModel(
+public data class ProcessModel(
     val name: String? = null,
     val model: String? = null,
     val size: Long? = null,
@@ -23,11 +39,14 @@ data class ProcessModel(
     val details: ModelDetails? = null,
     @SerialName("context_length")
     val contextLength: Int? = null,
-    /** Raw fallback for any additional fields returned by newer servers. */
-    val raw: JsonElement? = null,
 )
 
+/**
+ * Response from `GET /api/version`.
+ *
+ * @property version The Ollama server version string.
+ */
 @Serializable
-data class VersionResponse(
+public data class VersionResponse(
     val version: String,
 )

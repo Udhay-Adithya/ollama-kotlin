@@ -4,31 +4,70 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
+/**
+ * Response from `GET /api/tags` containing all locally available models.
+ *
+ * @property models The list of model tags available on the server.
+ */
 @Serializable
-data class ListResponse(
+public data class ListResponse(
     val models: List<ModelTag> = emptyList(),
 )
 
+/**
+ * A single model entry returned in a [ListResponse].
+ *
+ * @property name Full tag name, e.g. `"llama3:latest"`.
+ * @property model The base model identifier.
+ * @property modifiedAt ISO-8601 timestamp of the last modification.
+ * @property size Model size in bytes on disk.
+ * @property digest Content-addressable digest (e.g. `"sha256:abc..."`).
+ * @property details Opaque JSON details about the model architecture.
+ */
 @Serializable
-data class ModelTag(
+public data class ModelTag(
     val name: String,
     val model: String? = null,
-    val modified: String? = null,
+    @SerialName("modified_at")
+    val modifiedAt: String? = null,
     val size: Long? = null,
     val digest: String? = null,
     val details: JsonElement? = null,
 )
 
+/**
+ * Request body for `POST /api/show` to retrieve model metadata.
+ *
+ * @property model Name of the model to inspect.
+ * @property system Override the system prompt stored in the Modelfile.
+ * @property template Override the template stored in the Modelfile.
+ * @property options Runtime options (temperature, top_k, etc.) as a JSON object.
+ */
 @Serializable
-data class ShowRequest(
+public data class ShowRequest(
     val model: String,
     val system: String? = null,
     val template: String? = null,
     val options: JsonElement? = null,
 )
 
+/**
+ * Response from `POST /api/show` containing detailed model information.
+ *
+ * @property license License text of the model.
+ * @property modelfile The contents of the Modelfile.
+ * @property parameters Model parameters in string form.
+ * @property template The prompt template.
+ * @property system The system message.
+ * @property details Structured metadata about the model architecture.
+ * @property messages Default messages defined in the Modelfile.
+ * @property modifiedAt ISO-8601 timestamp of the last modification.
+ * @property modelInfo Raw model architecture information as JSON.
+ * @property capabilities List of model capabilities (e.g. `"completion"`, `"tools"`).
+ * @property projectorInfo Projector (vision adapter) information, if applicable.
+ */
 @Serializable
-data class ShowResponse(
+public data class ShowResponse(
     val license: String? = null,
     val modelfile: String? = null,
     val parameters: String? = null,
@@ -45,29 +84,67 @@ data class ShowResponse(
     val projectorInfo: JsonElement? = null,
 )
 
+/**
+ * Structured metadata about a model's architecture and quantization.
+ *
+ * @property parentModel Name of the parent model this was derived from.
+ * @property format Model file format (e.g. `"gguf"`).
+ * @property family Model family (e.g. `"llama"`, `"gemma"`).
+ * @property families All model families this model belongs to.
+ * @property parameterSize Human-readable parameter count (e.g. `"8B"`, `"70B"`).
+ * @property quantizationLevel Quantization level (e.g. `"Q4_0"`, `"Q8_0"`).
+ */
 @Serializable
-data class ModelDetails(
-    val parent_model: String? = null,
+public data class ModelDetails(
+    @SerialName("parent_model")
+    val parentModel: String? = null,
     val format: String? = null,
     val family: String? = null,
     val families: List<String>? = null,
-    val parameter_size: String? = null,
-    val quantization_level: String? = null,
+    @SerialName("parameter_size")
+    val parameterSize: String? = null,
+    @SerialName("quantization_level")
+    val quantizationLevel: String? = null,
 )
 
+/**
+ * Request body for `POST /api/copy` to duplicate a model under a new name.
+ *
+ * @property source Name of the existing model to copy.
+ * @property destination Name for the new copy.
+ */
 @Serializable
-data class CopyRequest(
+public data class CopyRequest(
     val source: String,
     val destination: String,
 )
 
+/**
+ * Request body for `DELETE /api/delete` to remove a model.
+ *
+ * @property model Name of the model to delete.
+ */
 @Serializable
-data class DeleteRequest(
+public data class DeleteRequest(
     val model: String,
 )
 
+/**
+ * Request body for `POST /api/create` to create a new model.
+ *
+ * @property model Name for the new model.
+ * @property fromModel Base model to derive from (maps to the `from` JSON field).
+ * @property quantize Target quantization level (e.g. `"q4_0"`).
+ * @property template Prompt template override.
+ * @property license License text or array of license strings.
+ * @property system System prompt override.
+ * @property parameters Model parameters as JSON.
+ * @property messages Default conversation messages.
+ * @property adapters Adapter layers as JSON.
+ * @property stream Whether to stream progress updates (`true`) or wait for completion.
+ */
 @Serializable
-data class CreateRequest(
+public data class CreateRequest(
     val model: String,
     @SerialName("from")
     val fromModel: String? = null,
@@ -81,28 +158,57 @@ data class CreateRequest(
     val stream: Boolean? = null,
 )
 
+/**
+ * Request body for `POST /api/pull` to download a model from a registry.
+ *
+ * @property model Name of the model to pull (e.g. `"llama3"`, `"llama3:70b"`).
+ * @property insecure Allow pulling from insecure (HTTP) registries.
+ * @property stream Whether to stream progress updates.
+ */
 @Serializable
-data class PullRequest(
+public data class PullRequest(
     val model: String,
     val insecure: Boolean? = null,
     val stream: Boolean? = null,
 )
 
+/**
+ * Request body for `POST /api/push` to upload a model to a registry.
+ *
+ * @property model Name of the model to push.
+ * @property insecure Allow pushing to insecure (HTTP) registries.
+ * @property stream Whether to stream progress updates.
+ */
 @Serializable
-data class PushRequest(
+public data class PushRequest(
     val model: String,
     val insecure: Boolean? = null,
     val stream: Boolean? = null,
 )
 
+/**
+ * Generic status response for operations like copy and delete.
+ *
+ * @property status Status message (e.g. `"success"`).
+ * @property error Error message, if the operation failed.
+ */
 @Serializable
-data class StatusResponse(
+public data class StatusResponse(
     val status: String? = null,
     val error: String? = null,
 )
 
+/**
+ * Progress update emitted during pull, push, and create operations.
+ *
+ * @property status Human-readable status (e.g. `"downloading"`, `"success"`).
+ * @property digest Digest of the layer currently being processed.
+ * @property total Total size in bytes of the current layer.
+ * @property completed Bytes completed so far for the current layer.
+ * @property error Error message, if any.
+ */
 @Serializable
-data class ProgressResponse(
+public data class ProgressResponse(
     val status: String? = null,
     val digest: String? = null,
     val total: Long? = null,
