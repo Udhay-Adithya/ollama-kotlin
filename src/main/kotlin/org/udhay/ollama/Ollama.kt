@@ -1,7 +1,8 @@
 package org.udhay.ollama
 
 /**
- * Convenience factory.
+ * Convenience factory for creating an [OllamaClient] with the given [config].
  */
-fun ollama(config: OllamaClientConfig = OllamaClientConfig()): OllamaClient = OllamaClient(config)
+public fun OllamaClient(config: OllamaClientConfig = OllamaClientConfig()): OllamaClient =
+    OllamaClient(config, engine = null)
 

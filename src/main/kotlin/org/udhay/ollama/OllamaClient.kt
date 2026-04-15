@@ -13,10 +13,6 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import org.udhay.ollama.api.ChatRequest
 import org.udhay.ollama.api.ChatResponse
@@ -52,52 +48,155 @@ import org.udhay.ollama.internal.postJsonLines
 import org.udhay.ollama.internal.requireSuccess
 import org.udhay.ollama.internal.uploadBlob
 import org.udhay.ollama.util.sha256DigestOf
+import java.io.Closeable
 import java.nio.file.Path
 
-class OllamaClient(
+/**
+ * Kotlin client for the [Ollama](https://ollama.com) REST API.
+ *
+ * Supports both suspend (one-shot) and [Flow]-based (streaming) interaction.
+ *
+ * ```kotlin
+ * val client = OllamaClient()
+ * val response = client.chat(ChatRequest(model = "llama3", messages = listOf(...)))
+ * client.close()
+ * ```
+ *
+ * Or using the factory DSL:
+ * ```kotlin
+ * val client = OllamaClient { host = "http://192.168.1.100:11434" }
+ * ```
+ */
+public class OllamaClient(
     config: OllamaClientConfig = OllamaClientConfig(),
     engine: HttpClientEngine? = null,
-) {
-    private var scope = CoroutineScope(SupervisorJob())
+) : Closeable {
 
-    private fun currentStreamJob(): Job = scope.coroutineContext[Job]
-        ?: error("Streaming scope Job is missing")
+    /**
+     * DSL constructor: `OllamaClient { host = "..." }`.
+     */
+    public constructor(block: OllamaClientConfig.Builder.() -> Unit) : this(
+        OllamaClientConfig.Builder().apply(block).build()
+    )
 
-    private val baseHost: String = (config.host ?: OllamaEnv.host() ?: "http://127.0.0.1:11434").trimEnd('/')
+    private val baseHost: String =
+        (config.host ?: OllamaEnv.host() ?: "http://127.0.0.1:11434").trimEnd('/')
 
-    private val resolvedHeaders: Map<String, String> = run {
-        val headersLower = config.headers.entries.associate { it.key.lowercase() to it.value }
-        val hasAuthorization = headersLower.containsKey("authorization")
-
-        if (hasAuthorization) config.headers
-        else {
-            val apiKey = OllamaEnv.apiKey()
-            if (apiKey == null) config.headers
-            else config.headers + mapOf(HttpHeaders.Authorization to "Bearer $apiKey")
+    private val resolvedHeaders: Map<String, String> = buildMap {
+        putAll(config.headers)
+        if (keys.none { it.equals("authorization", ignoreCase = true) }) {
+            OllamaEnv.apiKey()?.let { put(HttpHeaders.Authorization, "Bearer $it") }
         }
     }
 
-    internal val httpClient: HttpClient = if (engine == null) {
-        HttpClient(CIO) {
-            install(ContentNegotiation) {
-                json(DefaultJson)
-            }
-            defaultRequest {
-                url.takeFrom(baseHost)
-                resolvedHeaders.forEach { (k, v) -> headers.append(k, v) }
-            }
-        }
-    } else {
-        HttpClient(engine) {
-            install(ContentNegotiation) {
-                json(DefaultJson)
-            }
-            defaultRequest {
-                url.takeFrom(baseHost)
-                resolvedHeaders.forEach { (k, v) -> headers.append(k, v) }
-            }
+    internal val httpClient: HttpClient = HttpClient(engine ?: CIO.create()) {
+        install(ContentNegotiation) { json(DefaultJson) }
+        defaultRequest {
+            url.takeFrom(baseHost)
+            resolvedHeaders.forEach { (k, v) -> headers.append(k, v) }
         }
     }
+
+    // ---- Generate ----
+
+    /** Generates a completion. Waits for the full response (non-streaming). */
+    public suspend fun generate(request: GenerateRequest): GenerateResponse =
+        postJsonOrNdjsonLast("/api/generate", request)
+
+    /** Generates a completion, streaming each token as it arrives. */
+    public fun generateStream(request: GenerateRequest): Flow<GenerateResponse> =
+        httpClient.postJsonLines("/api/generate", request.copy(stream = true), DefaultJson)
+
+    // ---- Chat ----
+
+    /** Sends a chat request. Waits for the full response (non-streaming). */
+    public suspend fun chat(request: ChatRequest): ChatResponse =
+        postJsonOrNdjsonLast("/api/chat", request)
+
+    /** Sends a chat request, streaming each message chunk as it arrives. */
+    public fun chatStream(request: ChatRequest): Flow<ChatResponse> =
+        httpClient.postJsonLines("/api/chat", request.copy(stream = true), DefaultJson)
+
+    // ---- Embeddings ----
+
+    /** Generates embeddings for the given input. */
+    public suspend fun embed(request: EmbedRequest): EmbedResponse =
+        httpClient.postJson("/api/embed", request)
+
+    // ---- Model management ----
+
+    /** Lists all models available on the server. */
+    public suspend fun list(): ListResponse = httpClient.getJson("/api/tags")
+
+    /** Shows metadata about a model. */
+    public suspend fun show(request: ShowRequest): ShowResponse =
+        httpClient.postJson("/api/show", request)
+
+    /** Copies a model to a new name. */
+    public suspend fun copy(request: CopyRequest): StatusResponse =
+        httpClient.postJson("/api/copy", request)
+
+    /** Deletes a model. */
+    public suspend fun delete(request: DeleteRequest): StatusResponse =
+        httpClient.deleteJson("/api/delete", request)
+
+    /** Creates a new model (non-streaming, returns final progress). */
+    public suspend fun create(request: CreateRequest): ProgressResponse =
+        postJsonOrNdjsonLast("/api/create", request)
+
+    /** Creates a new model, streaming progress updates. */
+    public fun createStream(request: CreateRequest): Flow<ProgressResponse> =
+        httpClient.postJsonLines("/api/create", request.copy(stream = true), DefaultJson)
+
+    // ---- Pull / Push ----
+
+    /** Pulls a model from the registry (non-streaming, returns final progress). */
+    public suspend fun pull(request: PullRequest): ProgressResponse =
+        postJsonOrNdjsonLast("/api/pull", request)
+
+    /** Pulls a model, streaming progress updates. */
+    public fun pullStream(request: PullRequest): Flow<ProgressResponse> =
+        httpClient.postJsonLines("/api/pull", request.copy(stream = true), DefaultJson)
+
+    /** Pushes a model to the registry (non-streaming). */
+    public suspend fun push(request: PushRequest): ProgressResponse =
+        postJsonOrNdjsonLast("/api/push", request)
+
+    /** Pushes a model, streaming progress updates. */
+    public fun pushStream(request: PushRequest): Flow<ProgressResponse> =
+        httpClient.postJsonLines("/api/push", request.copy(stream = true), DefaultJson)
+
+    // ---- Blobs ----
+
+    /** Uploads a file to `/api/blobs/{digest}` and returns the digest. */
+    public suspend fun createBlob(digest: String, path: Path): String =
+        httpClient.uploadBlob(digest, path)
+
+    /** Computes the SHA-256 digest and uploads the file. Returns the digest. */
+    public suspend fun createBlob(path: Path): String {
+        val digest = sha256DigestOf(path)
+        return createBlob(digest, path)
+    }
+
+    // ---- System ----
+
+    /** Lists currently running (loaded) models. */
+    public suspend fun ps(): ProcessResponse = httpClient.getJson("/api/ps")
+
+    /** Returns the Ollama server version. */
+    public suspend fun version(): VersionResponse = httpClient.getJson("/api/version")
+
+    // ---- Web (requires Bearer token against ollama.com) ----
+
+    /** Performs a web search via the Ollama web-search API. */
+    public suspend fun webSearch(request: WebSearchRequest): WebSearchResponse =
+        httpClient.postJson("/api/web_search", request)
+
+    /** Fetches a single page via the Ollama web-fetch API. */
+    public suspend fun webFetch(request: WebFetchRequest): WebFetchResponse =
+        httpClient.postJson("/api/web_fetch", request)
+
+    // ---- Internals ----
 
     private suspend inline fun <reified Req : Any, reified Res> postJsonOrNdjsonLast(
         path: String,
@@ -107,113 +206,11 @@ class OllamaClient(
             contentType(ContentType.Application.Json)
             setBody(body)
         }
-
         response.requireSuccess()
         return if (response.isNdjson()) response.bodyFromNdjsonLast(DefaultJson) else response.bodyOrThrow()
     }
 
-    suspend fun chat(request: ChatRequest): ChatResponse = postJsonOrNdjsonLast("/api/chat", request)
-
-    fun chatStreaming(request: ChatRequest): Flow<ChatResponse> {
-        val body = if (request.stream == true) request else request.copy(stream = true)
-        return httpClient.postJsonLines(
-            "/api/chat",
-            body,
-            DefaultJson,
-            requestContext = currentStreamJob(),
-        )
-    }
-
-    suspend fun generate(request: GenerateRequest): GenerateResponse = postJsonOrNdjsonLast("/api/generate", request)
-
-    fun generateStreaming(request: GenerateRequest): Flow<GenerateResponse> {
-        val body = if (request.stream == true) request else request.copy(stream = true)
-        return httpClient.postJsonLines(
-            "/api/generate",
-            body,
-            DefaultJson,
-            requestContext = currentStreamJob(),
-        )
-    }
-
-    suspend fun embed(request: EmbedRequest): EmbedResponse = httpClient.postJson("/api/embed", request)
-
-    suspend fun list(): ListResponse = httpClient.getJson("/api/tags")
-
-    suspend fun show(request: ShowRequest): ShowResponse = httpClient.postJson("/api/show", request)
-
-    suspend fun copy(request: CopyRequest): StatusResponse = httpClient.postJson("/api/copy", request)
-
-    suspend fun delete(request: DeleteRequest): StatusResponse = httpClient.deleteJson("/api/delete", request)
-
-    suspend fun create(request: CreateRequest): ProgressResponse = postJsonOrNdjsonLast("/api/create", request)
-
-    fun createStreaming(request: CreateRequest): Flow<ProgressResponse> {
-        val body = if (request.stream == true) request else request.copy(stream = true)
-        return httpClient.postJsonLines(
-            "/api/create",
-            body,
-            DefaultJson,
-            requestContext = currentStreamJob(),
-        )
-    }
-
-    suspend fun pull(request: PullRequest): ProgressResponse = postJsonOrNdjsonLast("/api/pull", request)
-
-    fun pullStreaming(request: PullRequest): Flow<ProgressResponse> {
-        val body = if (request.stream == true) request else request.copy(stream = true)
-        return httpClient.postJsonLines(
-            "/api/pull",
-            body,
-            DefaultJson,
-            requestContext = currentStreamJob(),
-        )
-    }
-
-    suspend fun push(request: PushRequest): ProgressResponse = postJsonOrNdjsonLast("/api/push", request)
-
-    fun pushStreaming(request: PushRequest): Flow<ProgressResponse> {
-        val body = if (request.stream == true) request else request.copy(stream = true)
-        return httpClient.postJsonLines(
-            "/api/push",
-            body,
-            DefaultJson,
-            requestContext = currentStreamJob(),
-        )
-    }
-
-    /** Uploads a file to /api/blobs/{digest} and returns the digest. */
-    suspend fun createBlob(digest: String, path: Path): String = httpClient.uploadBlob(digest, path)
-
-    /**
-     * Uploads a file to /api/blobs/{sha256:...} and returns the digest.
-     */
-    suspend fun createBlob(path: Path): String {
-        val digest = sha256DigestOf(path)
-        return createBlob(digest, path)
-    }
-
-    suspend fun ps(): ProcessResponse = httpClient.getJson("/api/ps")
-
-    suspend fun version(): VersionResponse = httpClient.getJson("/api/version")
-
-    /**
-     * Requires an API key (Authorization: Bearer ...). The host must point to ollama.com.
-     */
-    suspend fun webSearch(request: WebSearchRequest): WebSearchResponse = httpClient.postJson("/api/web_search", request)
-
-    /**
-     * Requires an API key (Authorization: Bearer ...). The host must point to ollama.com.
-     */
-    suspend fun webFetch(request: WebFetchRequest): WebFetchResponse = httpClient.postJson("/api/web_fetch", request)
-
-    fun abortAllStreams() {
-        scope.cancel("aborted")
-        scope = CoroutineScope(SupervisorJob())
-    }
-
-    fun close() {
+    override fun close() {
         httpClient.close()
-        scope.cancel()
     }
 }

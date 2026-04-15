@@ -5,9 +5,11 @@ import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.client.request.preparePost
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsChannel
 import io.ktor.client.statement.bodyAsText
 import io.ktor.client.statement.request
 import io.ktor.http.ContentType
@@ -15,13 +17,17 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
 import io.ktor.http.encodedPath
 import io.ktor.http.isSuccess
-import kotlin.coroutines.CoroutineContext
+import io.ktor.utils.io.readUTF8Line
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.jsonPrimitive
 import org.udhay.ollama.OllamaException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -65,7 +71,6 @@ internal suspend inline fun <reified Res> HttpResponse.bodyOrThrow(): Res {
 
 internal fun HttpResponse.isNdjson(): Boolean {
     val ct = contentType() ?: return false
-    // Ktor's ContentType may contain charset params. Compare the base type/subtype only.
     return ct.contentType == "application" && ct.contentSubtype == "x-ndjson"
 }
 
@@ -98,16 +103,51 @@ internal suspend inline fun <reified Res> HttpResponse.bodyFromNdjsonLast(json: 
     return json.decodeFromJsonElement(element)
 }
 
+/**
+ * Sends a POST request and returns a [Flow] that emits each NDJSON line
+ * deserialized as [Res]. If any line contains an `"error"` field, an
+ * [OllamaException] is thrown immediately.
+ */
 internal inline fun <reified Req : Any, reified Res> HttpClient.postJsonLines(
     path: String,
     body: Req,
     json: Json,
-    requestContext: CoroutineContext? = null,
-): Flow<Res> {
-    @Suppress("UNUSED_VARIABLE", "UNUSED")
-    val _keepSignatureStable = arrayOf(this, path, body, json, requestContext)
+): Flow<Res> = flow {
+    preparePost(path) {
+        contentType(ContentType.Application.Json)
+        setBody(body)
+    }.execute { response ->
+        if (!response.status.isSuccess()) {
+            val text = response.bodyTextSafe()
+            throw OllamaException(
+                message = "Streaming request failed (POST $path): HTTP ${response.status}",
+                statusCode = response.status.value,
+                responseBody = text,
+            )
+        }
 
-    TODO("Streaming NDJSON support will be implemented later")
+        val channel = response.bodyAsChannel()
+        while (!channel.isClosedForRead) {
+            val line = channel.readUTF8Line() ?: break
+            val trimmed = line.trim()
+            if (trimmed.isEmpty()) continue
+
+            val element = json.parseToJsonElement(trimmed)
+
+            // Check for error in the JSON line
+            if (element is JsonObject) {
+                val errorField = element["error"]?.jsonPrimitive?.contentOrNull
+                if (!errorField.isNullOrBlank()) {
+                    throw OllamaException(
+                        message = errorField,
+                        responseBody = trimmed,
+                    )
+                }
+            }
+
+            emit(json.decodeFromJsonElement<Res>(element))
+        }
+    }
 }
 
 internal suspend fun HttpClient.uploadBlob(
