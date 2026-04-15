@@ -1,22 +1,23 @@
 plugins {
     kotlin("jvm") version "2.2.21"
     kotlin("plugin.serialization") version "2.2.21"
+    id("org.jetbrains.dokka") version "2.0.0"
 }
 
-group = "org.udhay"
-version = "1.0-SNAPSHOT"
+group = "io.github.udhay-adithya"
+version = "0.1.0"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-    implementation("io.ktor:ktor-client-core:3.2.3")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    api("io.ktor:ktor-client-core:3.2.3")
     implementation("io.ktor:ktor-client-cio:3.2.3")
     implementation("io.ktor:ktor-client-content-negotiation:3.2.3")
     implementation("io.ktor:ktor-serialization-kotlinx-json:3.2.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
     testImplementation(kotlin("test"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
@@ -27,6 +28,7 @@ dependencies {
 
 kotlin {
     jvmToolchain(21)
+    explicitApi()
 }
 
 tasks.test {
