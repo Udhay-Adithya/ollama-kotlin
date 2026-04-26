@@ -45,5 +45,4 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-ollama-python-main
-ollama-js-main
+local.properties

@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm") version "2.2.21"
     kotlin("plugin.serialization") version "2.2.21"
     id("org.jetbrains.dokka") version "2.0.0"
+    `maven-publish`
 }
 
 group = "io.github.udhay-adithya"
@@ -9,6 +10,24 @@ version = "0.1.0"
 
 repositories {
     mavenCentral()
+}
+
+java {
+    withSourcesJar()
+}
+
+val dokkaJavadocJar by tasks.registering(Jar::class) {
+    from(tasks.named("dokkaGenerate"))
+    archiveClassifier.set("javadoc")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+            artifact(dokkaJavadocJar)
+        }
+    }
 }
 
 dependencies {
