@@ -5,9 +5,6 @@ plugins {
     `maven-publish`
 }
 
-group = "io.github.udhay-adithya"
-version = "0.1.0"
-
 repositories {
     mavenCentral()
 }
