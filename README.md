@@ -1,75 +1,60 @@
 # ollama-kotlin
 
-A Kotlin client library for the [Ollama](https://ollama.com) API. Built with coroutines, `Flow`-based streaming, and `kotlinx.serialization` — designed for Kotlin backends and Android apps (Jetpack Compose).
+The Ollama Kotlin library provides the easiest way to integrate Kotlin projects with [Ollama](https://github.com/ollama/ollama).
 
-[![JitPack](https://jitpack.io/v/Udhay-Adithya/ollama-kotlin.svg)](https://jitpack.io/#Udhay-Adithya/ollama-kotlin)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.udhay-adithya/ollama-kotlin.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.udhay-adithya/ollama-kotlin)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+## Prerequisites
+
+- [Ollama](https://ollama.com/download) should be installed and running
+- Pull a model to use with the library: `ollama pull <model>` e.g. `ollama pull gemma3`
+  - See [Ollama.com](https://ollama.com/search) for more information on the models available.
 
 ## Installation
 
+The library is available on Maven Central.
+
 ### Gradle (Kotlin DSL)
-
-Add the JitPack repository to your `settings.gradle.kts`:
-
-```kotlin
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-        maven { url = uri("https://jitpack.io") }
-    }
-}
-```
-
-Then add the dependency:
 
 ```kotlin
 dependencies {
-    implementation("com.github.Udhay-Adithya:ollama-kotlin:0.1.0")
+    implementation("io.github.udhay-adithya:ollama-kotlin:0.1.0")
 }
 ```
 
 ### Gradle (Groovy)
 
-Add JitPack to your root `build.gradle`:
-
-```groovy
-allprojects {
-    repositories {
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-    }
-}
-```
-
-Then add the dependency:
-
 ```groovy
 dependencies {
-    implementation 'com.github.Udhay-Adithya:ollama-kotlin:0.1.0'
+    implementation 'io.github.udhay-adithya:ollama-kotlin:0.1.0'
 }
 ```
 
 ### Maven
 
-Add the JitPack repository:
-
-```xml
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-```
-
-Then add the dependency:
-
 ```xml
 <dependency>
-    <groupId>com.github.Udhay-Adithya</groupId>
+    <groupId>io.github.udhay-adithya</groupId>
     <artifactId>ollama-kotlin</artifactId>
     <version>0.1.0</version>
 </dependency>
+```
+
+### Version Catalog (libs.versions.toml)
+
+```toml
+[versions]
+ollama = "0.1.0"
+
+[libraries]
+ollama-kotlin = { module = "io.github.udhay-adithya:ollama-kotlin", version.ref = "ollama" }
+```
+Then in your `build.gradle.kts`:
+```kotlin
+dependencies {
+    implementation(libs.ollama.kotlin)
+}
 ```
 
 ## Quick Start
@@ -562,4 +547,4 @@ The generated HTML documentation will be in `build/dokka/html/`. Open `index.htm
 
 ## License
 
-[MIT](LICENSE)
+[Apache License 2.0](LICENSE)
