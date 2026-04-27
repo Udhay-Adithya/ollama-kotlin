@@ -2,27 +2,42 @@ plugins {
     kotlin("jvm") version "2.2.21"
     kotlin("plugin.serialization") version "2.2.21"
     id("org.jetbrains.dokka") version "2.0.0"
-    `maven-publish`
+    id("com.vanniktech.maven.publish") version "0.36.0"
 }
 
 repositories {
     mavenCentral()
 }
 
-java {
-    withSourcesJar()
-}
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
 
-val dokkaJavadocJar by tasks.registering(Jar::class) {
-    from(tasks.named("dokkaGenerate"))
-    archiveClassifier.set("javadoc")
-}
+    coordinates("io.github.udhay-adithya", "ollama-kotlin", "0.1.0")
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-            artifact(dokkaJavadocJar)
+    pom {
+        name.set("ollama-kotlin")
+        description.set("Kotlin client for Ollama")
+        inceptionYear.set("2026")
+        url.set("https://github.com/Udhay-Adithya/ollama-kotlin")
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                distribution.set("repo")
+            }
+        }
+        developers {
+            developer {
+                id.set("udhay-adithya")
+                name.set("Udhay Adithya")
+                url.set("https://github.com/Udhay-Adithya/")
+            }
+        }
+        scm {
+            url.set("https://github.com/Udhay-Adithya/ollama-kotlin/")
+            connection.set("scm:git:git://github.com/Udhay-Adithya/ollama-kotlin.git")
+            developerConnection.set("scm:git:ssh://git@github.com/Udhay-Adithya/ollama-kotlin.git")
         }
     }
 }
