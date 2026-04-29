@@ -2,12 +2,15 @@ package org.udhay.ollama.internal
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.preparePost
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
+import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.client.statement.bodyAsText
@@ -15,7 +18,6 @@ import io.ktor.client.statement.request
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
-import io.ktor.http.encodedPath
 import io.ktor.http.isSuccess
 import io.ktor.utils.io.readUTF8Line
 import kotlinx.coroutines.Dispatchers
@@ -28,25 +30,47 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonPrimitive
+import org.udhay.ollama.OllamaClientConfig
 import org.udhay.ollama.OllamaException
 import java.nio.file.Files
 import java.nio.file.Path
 
-internal suspend inline fun <reified T> HttpClient.getJson(path: String): T {
-    val response = get(path)
+internal fun HttpRequestBuilder.applyConfig(config: OllamaClientConfig, path: String) {
+    val host = config.host ?: OllamaEnv.host() ?: "http://127.0.0.1:11434"
+    url(host.removeSuffix("/") + "/" + path.removePrefix("/"))
+    config.headers.forEach { (k, v) -> header(k, v) }
+}
+
+internal suspend inline fun <reified T> HttpClient.getJson(
+    path: String,
+    config: OllamaClientConfig,
+): T {
+    val response = get {
+        applyConfig(config, path)
+    }
     return response.bodyOrThrow()
 }
 
-internal suspend inline fun <reified Req : Any, reified Res> HttpClient.postJson(path: String, body: Req): Res {
-    val response = post(path) {
+internal suspend inline fun <reified Req : Any, reified Res> HttpClient.postJson(
+    path: String,
+    body: Req,
+    config: OllamaClientConfig,
+): Res {
+    val response = post {
+        applyConfig(config, path)
         contentType(ContentType.Application.Json)
         setBody(body)
     }
     return response.bodyOrThrow()
 }
 
-internal suspend inline fun <reified Req : Any, reified Res> HttpClient.deleteJson(path: String, body: Req): Res {
-    val response = delete(path) {
+internal suspend inline fun <reified Req : Any, reified Res> HttpClient.deleteJson(
+    path: String,
+    body: Req,
+    config: OllamaClientConfig,
+): Res {
+    val response = delete {
+        applyConfig(config, path)
         contentType(ContentType.Application.Json)
         setBody(body)
     }
@@ -112,8 +136,10 @@ internal inline fun <reified Req : Any, reified Res> HttpClient.postJsonLines(
     path: String,
     body: Req,
     json: Json,
+    config: OllamaClientConfig,
 ): Flow<Res> = flow {
-    preparePost(path) {
+    preparePost {
+        applyConfig(config, path)
         contentType(ContentType.Application.Json)
         setBody(body)
     }.execute { response ->
@@ -153,6 +179,7 @@ internal inline fun <reified Req : Any, reified Res> HttpClient.postJsonLines(
 internal suspend fun HttpClient.uploadBlob(
     digest: String,
     path: Path,
+    config: OllamaClientConfig,
 ): String {
     val bytes = withContext(Dispatchers.IO) {
         Files.readAllBytes(path)
@@ -160,9 +187,7 @@ internal suspend fun HttpClient.uploadBlob(
 
     val response = request {
         method = HttpMethod.Post
-        url {
-            encodedPath = "/api/blobs/$digest"
-        }
+        applyConfig(config, "/api/blobs/$digest")
         contentType(ContentType.Application.OctetStream)
         setBody(bytes)
     }

@@ -4,16 +4,16 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
-import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import org.udhay.ollama.api.ChatRequest
 import org.udhay.ollama.api.ChatResponse
 import org.udhay.ollama.api.CopyRequest
@@ -38,6 +38,7 @@ import org.udhay.ollama.api.WebSearchRequest
 import org.udhay.ollama.api.WebSearchResponse
 import org.udhay.ollama.internal.DefaultJson
 import org.udhay.ollama.internal.OllamaEnv
+import org.udhay.ollama.internal.applyConfig
 import org.udhay.ollama.internal.bodyFromNdjsonLast
 import org.udhay.ollama.internal.bodyOrThrow
 import org.udhay.ollama.internal.deleteJson
@@ -68,9 +69,14 @@ import java.nio.file.Path
  * ```
  */
 public class OllamaClient(
-    config: OllamaClientConfig = OllamaClientConfig(),
+    private val configProvider: suspend () -> OllamaClientConfig,
     engine: HttpClientEngine? = null,
 ) : Closeable {
+
+    public constructor(
+        config: OllamaClientConfig = OllamaClientConfig(),
+        engine: HttpClientEngine? = null,
+    ) : this({ config }, engine)
 
     /**
      * DSL constructor: `OllamaClient { host = "..." }`.
@@ -79,22 +85,19 @@ public class OllamaClient(
         OllamaClientConfig.Builder().apply(block).build()
     )
 
-    private val baseHost: String =
-        (config.host ?: OllamaEnv.host() ?: "http://127.0.0.1:11434").trimEnd('/')
-
-    private val resolvedHeaders: Map<String, String> = buildMap {
-        putAll(config.headers)
-        if (keys.none { it.equals("authorization", ignoreCase = true) }) {
-            OllamaEnv.apiKey()?.let { put(HttpHeaders.Authorization, "Bearer $it") }
+    private suspend fun resolveConfig(): OllamaClientConfig {
+        val config = configProvider()
+        val headers = buildMap {
+            putAll(config.headers)
+            if (keys.none { it.equals("authorization", ignoreCase = true) }) {
+                OllamaEnv.apiKey()?.let { put(HttpHeaders.Authorization, "Bearer $it") }
+            }
         }
+        return config.copy(headers = headers)
     }
 
     internal val httpClient: HttpClient = HttpClient(engine ?: CIO.create()) {
         install(ContentNegotiation) { json(DefaultJson) }
-        defaultRequest {
-            url.takeFrom(baseHost)
-            resolvedHeaders.forEach { (k, v) -> headers.append(k, v) }
-        }
     }
 
     // ---- Generate ----
@@ -104,8 +107,10 @@ public class OllamaClient(
         postJsonOrNdjsonLast("/api/generate", request)
 
     /** Generates a completion, streaming each token as it arrives. */
-    public fun generateStream(request: GenerateRequest): Flow<GenerateResponse> =
-        httpClient.postJsonLines("/api/generate", request.copy(stream = true), DefaultJson)
+    public fun generateStream(request: GenerateRequest): Flow<GenerateResponse> = flow {
+        val config = resolveConfig()
+        emitAll(httpClient.postJsonLines("/api/generate", request.copy(stream = true), DefaultJson, config))
+    }
 
     // ---- Chat ----
 
@@ -114,39 +119,43 @@ public class OllamaClient(
         postJsonOrNdjsonLast("/api/chat", request)
 
     /** Sends a chat request, streaming each message chunk as it arrives. */
-    public fun chatStream(request: ChatRequest): Flow<ChatResponse> =
-        httpClient.postJsonLines("/api/chat", request.copy(stream = true), DefaultJson)
+    public fun chatStream(request: ChatRequest): Flow<ChatResponse> = flow {
+        val config = resolveConfig()
+        emitAll(httpClient.postJsonLines("/api/chat", request.copy(stream = true), DefaultJson, config))
+    }
 
     // ---- Embeddings ----
 
     /** Generates embeddings for the given input. */
     public suspend fun embed(request: EmbedRequest): EmbedResponse =
-        httpClient.postJson("/api/embed", request)
+        httpClient.postJson("/api/embed", request, resolveConfig())
 
     // ---- Model management ----
 
     /** Lists all models available on the server. */
-    public suspend fun list(): ListResponse = httpClient.getJson("/api/tags")
+    public suspend fun list(): ListResponse = httpClient.getJson("/api/tags", resolveConfig())
 
     /** Shows metadata about a model. */
     public suspend fun show(request: ShowRequest): ShowResponse =
-        httpClient.postJson("/api/show", request)
+        httpClient.postJson("/api/show", request, resolveConfig())
 
     /** Copies a model to a new name. */
     public suspend fun copy(request: CopyRequest): StatusResponse =
-        httpClient.postJson("/api/copy", request)
+        httpClient.postJson("/api/copy", request, resolveConfig())
 
     /** Deletes a model. */
     public suspend fun delete(request: DeleteRequest): StatusResponse =
-        httpClient.deleteJson("/api/delete", request)
+        httpClient.deleteJson("/api/delete", request, resolveConfig())
 
     /** Creates a new model (non-streaming, returns final progress). */
     public suspend fun create(request: CreateRequest): ProgressResponse =
         postJsonOrNdjsonLast("/api/create", request)
 
     /** Creates a new model, streaming progress updates. */
-    public fun createStream(request: CreateRequest): Flow<ProgressResponse> =
-        httpClient.postJsonLines("/api/create", request.copy(stream = true), DefaultJson)
+    public fun createStream(request: CreateRequest): Flow<ProgressResponse> = flow {
+        val config = resolveConfig()
+        emitAll(httpClient.postJsonLines("/api/create", request.copy(stream = true), DefaultJson, config))
+    }
 
     // ---- Pull / Push ----
 
@@ -155,22 +164,26 @@ public class OllamaClient(
         postJsonOrNdjsonLast("/api/pull", request)
 
     /** Pulls a model, streaming progress updates. */
-    public fun pullStream(request: PullRequest): Flow<ProgressResponse> =
-        httpClient.postJsonLines("/api/pull", request.copy(stream = true), DefaultJson)
+    public fun pullStream(request: PullRequest): Flow<ProgressResponse> = flow {
+        val config = resolveConfig()
+        emitAll(httpClient.postJsonLines("/api/pull", request.copy(stream = true), DefaultJson, config))
+    }
 
     /** Pushes a model to the registry (non-streaming). */
     public suspend fun push(request: PushRequest): ProgressResponse =
         postJsonOrNdjsonLast("/api/push", request)
 
     /** Pushes a model, streaming progress updates. */
-    public fun pushStream(request: PushRequest): Flow<ProgressResponse> =
-        httpClient.postJsonLines("/api/push", request.copy(stream = true), DefaultJson)
+    public fun pushStream(request: PushRequest): Flow<ProgressResponse> = flow {
+        val config = resolveConfig()
+        emitAll(httpClient.postJsonLines("/api/push", request.copy(stream = true), DefaultJson, config))
+    }
 
     // ---- Blobs ----
 
     /** Uploads a file to `/api/blobs/{digest}` and returns the digest. */
     public suspend fun createBlob(digest: String, path: Path): String =
-        httpClient.uploadBlob(digest, path)
+        httpClient.uploadBlob(digest, path, resolveConfig())
 
     /** Computes the SHA-256 digest and uploads the file. Returns the digest. */
     public suspend fun createBlob(path: Path): String {
@@ -181,20 +194,20 @@ public class OllamaClient(
     // ---- System ----
 
     /** Lists currently running (loaded) models. */
-    public suspend fun ps(): ProcessResponse = httpClient.getJson("/api/ps")
+    public suspend fun ps(): ProcessResponse = httpClient.getJson("/api/ps", resolveConfig())
 
     /** Returns the Ollama server version. */
-    public suspend fun version(): VersionResponse = httpClient.getJson("/api/version")
+    public suspend fun version(): VersionResponse = httpClient.getJson("/api/version", resolveConfig())
 
     // ---- Web (requires Bearer token against ollama.com) ----
 
     /** Performs a web search via the Ollama web-search API. */
     public suspend fun webSearch(request: WebSearchRequest): WebSearchResponse =
-        httpClient.postJson("/api/web_search", request)
+        httpClient.postJson("/api/web_search", request, resolveConfig())
 
     /** Fetches a single page via the Ollama web-fetch API. */
     public suspend fun webFetch(request: WebFetchRequest): WebFetchResponse =
-        httpClient.postJson("/api/web_fetch", request)
+        httpClient.postJson("/api/web_fetch", request, resolveConfig())
 
     // ---- Internals ----
 
@@ -202,7 +215,9 @@ public class OllamaClient(
         path: String,
         body: Req,
     ): Res {
-        val response: HttpResponse = httpClient.post(path) {
+        val config = resolveConfig()
+        val response: HttpResponse = httpClient.post {
+            applyConfig(config, path)
             contentType(ContentType.Application.Json)
             setBody(body)
         }

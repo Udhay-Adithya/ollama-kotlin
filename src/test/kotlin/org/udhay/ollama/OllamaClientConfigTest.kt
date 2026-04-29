@@ -15,10 +15,10 @@ class OllamaClientConfigTest {
 
     @Test
     fun `builder DSL sets host and headers`() {
-        val client = OllamaClient {
+        val client = OllamaClient(OllamaClientConfig.Builder().apply {
             host = "http://192.168.1.100:11434"
             headers["X-Custom"] = "value"
-        }
+        }.build())
         assertNotNull(client)
         client.close()
     }
