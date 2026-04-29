@@ -19,7 +19,7 @@ The library is available on Maven Central.
 
 ```kotlin
 dependencies {
-    implementation("io.github.udhay-adithya:ollama-kotlin:0.1.0")
+    implementation("io.github.udhay-adithya:ollama-kotlin:0.1.1")
 }
 ```
 
@@ -27,7 +27,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'io.github.udhay-adithya:ollama-kotlin:0.1.0'
+    implementation 'io.github.udhay-adithya:ollama-kotlin:0.1.1'
 }
 ```
 
@@ -37,7 +37,7 @@ dependencies {
 <dependency>
     <groupId>io.github.udhay-adithya</groupId>
     <artifactId>ollama-kotlin</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
 </dependency>
 ```
 
@@ -45,7 +45,7 @@ dependencies {
 
 ```toml
 [versions]
-ollama = "0.1.0"
+ollama = "0.1.1"
 
 [libraries]
 ollama-kotlin = { module = "io.github.udhay-adithya:ollama-kotlin", version.ref = "ollama" }
