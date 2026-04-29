@@ -3,7 +3,7 @@
 The Ollama Kotlin library provides the easiest way to integrate Kotlin projects with [Ollama](https://github.com/ollama/ollama).
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.udhay-adithya/ollama-kotlin.svg?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.udhay-adithya/ollama-kotlin)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Prerequisites
 
@@ -111,6 +111,22 @@ val client = OllamaClient(
         host = "http://192.168.1.100:11434",
         headers = mapOf("X-Custom-Header" to "value")
     )
+)
+```
+
+### Dynamic Configuration
+
+Provide a `suspend` lambda to resolve the configuration for every request:
+
+```kotlin
+val client = OllamaClient(
+    configProvider = {
+        val settings = userSettingsRepository.get()
+        OllamaClientConfig(
+            host = settings.baseUrl,
+            headers = mapOf("Authorization" to "Bearer ${settings.token}")
+        )
+    }
 )
 ```
 
@@ -547,4 +563,4 @@ The generated HTML documentation will be in `build/dokka/html/`. Open `index.htm
 
 ## License
 
-[Apache License 2.0](LICENSE)
+[MIT License](LICENSE)
