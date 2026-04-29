@@ -247,9 +247,11 @@ $dokka.location:org.udhay.ollama.util////PointingToDeclaration/ollama-kotlin/or
 $dokka.location:org.udhay.ollama.util//sha256DigestOf/#java.io.InputStream/PointingToDeclaration/ollama-kotlin/org.udhay.ollama.util/sha256-digest-of.html
 $dokka.location:org.udhay.ollama.util//sha256DigestOf/#java.nio.file.Path/PointingToDeclaration/ollama-kotlin/org.udhay.ollama.util/sha256-digest-of.html
 $dokka.location:org.udhay.ollama////PointingToDeclaration/ollama-kotlin/org.udhay.ollama/index.html
+$dokka.location:org.udhay.ollama//OllamaClient/#kotlin.coroutines.SuspendFunction0[org.udhay.ollama.OllamaClientConfig]/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client.html
 $dokka.location:org.udhay.ollama//OllamaClient/#org.udhay.ollama.OllamaClientConfig/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client.html
 $dokka.location:org.udhay.ollama/OllamaClient///PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/index.html
 $dokka.location:org.udhay.ollama/OllamaClient/OllamaClient/#kotlin.Function1[org.udhay.ollama.OllamaClientConfig.Builder,kotlin.Unit]/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/-ollama-client.html
+$dokka.location:org.udhay.ollama/OllamaClient/OllamaClient/#kotlin.coroutines.SuspendFunction0[org.udhay.ollama.OllamaClientConfig]#io.ktor.client.engine.HttpClientEngine?/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/-ollama-client.html
 $dokka.location:org.udhay.ollama/OllamaClient/OllamaClient/#org.udhay.ollama.OllamaClientConfig#io.ktor.client.engine.HttpClientEngine?/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/-ollama-client.html
 $dokka.location:org.udhay.ollama/OllamaClient/chat/#org.udhay.ollama.api.ChatRequest/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/chat.html
 $dokka.location:org.udhay.ollama/OllamaClient/chatStream/#org.udhay.ollama.api.ChatRequest/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/chat-stream.html
