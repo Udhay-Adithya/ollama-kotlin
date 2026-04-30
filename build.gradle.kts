@@ -13,7 +13,7 @@ mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
 
-    coordinates("io.github.udhay-adithya", "ollama-kotlin", "0.1.1")
+    coordinates("io.github.udhay-adithya", "ollama-kotlin", "0.1.2")
 
     pom {
         name.set("ollama-kotlin")
