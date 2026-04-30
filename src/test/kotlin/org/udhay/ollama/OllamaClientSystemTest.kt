@@ -1,19 +1,45 @@
 package org.udhay.ollama
 
+import io.ktor.client.engine.mock.respond
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import org.junit.jupiter.api.Test
 import org.udhay.ollama.internal.DefaultJson
 import org.udhay.ollama.testutil.jsonResponse
 import org.udhay.ollama.testutil.mockEngine
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class OllamaClientSystemTest {
 
     private fun client(engine: io.ktor.client.engine.mock.MockEngine) =
         OllamaClient(OllamaClientConfig(host = "http://localhost:11434"), engine)
+
+    @Test
+    fun `ping returns true when server is running`() = runTest {
+        val engine = io.ktor.client.engine.mock.MockEngine { _ ->
+            respond("Ollama is running", HttpStatusCode.OK)
+        }
+        assertTrue(client(engine).ping())
+    }
+
+    @Test
+    fun `ping returns false when server returns error`() = runTest {
+        val engine = io.ktor.client.engine.mock.MockEngine { _ ->
+            respond("Internal Server Error", HttpStatusCode.InternalServerError)
+        }
+        assertFalse(client(engine).ping())
+    }
+
+    @Test
+    fun `ping returns false when connection fails`() = runTest {
+        val engine = io.ktor.client.engine.mock.MockEngine { _ ->
+            throw Exception("Connection refused")
+        }
+        assertFalse(client(engine).ping())
+    }
 
     @Test
     fun `ps returns running models`() = runTest {

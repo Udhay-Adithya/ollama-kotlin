@@ -4,7 +4,10 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.isSuccess
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
@@ -192,6 +195,20 @@ public class OllamaClient(
     }
 
     // ---- System ----
+
+    /**
+     * Checks if the Ollama server is running and reachable.
+     * Returns true if the server responds with "Ollama is running".
+     */
+    public suspend fun ping(): Boolean = try {
+        val config = resolveConfig()
+        val response: HttpResponse = httpClient.get {
+            applyConfig(config, "/")
+        }
+        response.status.isSuccess() && response.bodyAsText().trim() == "Ollama is running"
+    } catch (e: Exception) {
+        false
+    }
 
     /** Lists currently running (loaded) models. */
     public suspend fun ps(): ProcessResponse = httpClient.getJson("/api/ps", resolveConfig())
