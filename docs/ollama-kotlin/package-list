@@ -266,6 +266,7 @@ $dokka.location:org.udhay.ollama/OllamaClient/embed/#org.udhay.ollama.api.EmbedR
 $dokka.location:org.udhay.ollama/OllamaClient/generate/#org.udhay.ollama.api.GenerateRequest/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/generate.html
 $dokka.location:org.udhay.ollama/OllamaClient/generateStream/#org.udhay.ollama.api.GenerateRequest/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/generate-stream.html
 $dokka.location:org.udhay.ollama/OllamaClient/list/#/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/list.html
+$dokka.location:org.udhay.ollama/OllamaClient/ping/#/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/ping.html
 $dokka.location:org.udhay.ollama/OllamaClient/ps/#/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/ps.html
 $dokka.location:org.udhay.ollama/OllamaClient/pull/#org.udhay.ollama.api.PullRequest/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/pull.html
 $dokka.location:org.udhay.ollama/OllamaClient/pullStream/#org.udhay.ollama.api.PullRequest/PointingToDeclaration/ollama-kotlin/org.udhay.ollama/-ollama-client/pull-stream.html
