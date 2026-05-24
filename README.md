@@ -19,7 +19,7 @@ The library is available on Maven Central.
 
 ```kotlin
 dependencies {
-    implementation("io.github.udhay-adithya:ollama-kotlin:0.1.2")
+    implementation("io.github.udhay-adithya:ollama-kotlin:0.1.3")
 }
 ```
 
@@ -27,7 +27,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'io.github.udhay-adithya:ollama-kotlin:0.1.2'
+    implementation 'io.github.udhay-adithya:ollama-kotlin:0.1.3'
 }
 ```
 
@@ -37,7 +37,7 @@ dependencies {
 <dependency>
     <groupId>io.github.udhay-adithya</groupId>
     <artifactId>ollama-kotlin</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
 </dependency>
 ```
 
@@ -45,7 +45,7 @@ dependencies {
 
 ```toml
 [versions]
-ollama = "0.1.2"
+ollama = "0.1.3"
 
 [libraries]
 ollama-kotlin = { module = "io.github.udhay-adithya:ollama-kotlin", version.ref = "ollama" }
@@ -100,6 +100,7 @@ OllamaClient().use { client ->
 val client = OllamaClient {
     host = "http://192.168.1.100:11434"
     headers["X-Custom-Header"] = "value"
+    requestTimeoutMillis = 300_000 // 5 minutes
 }
 ```
 
@@ -109,7 +110,8 @@ val client = OllamaClient {
 val client = OllamaClient(
     OllamaClientConfig(
         host = "http://192.168.1.100:11434",
-        headers = mapOf("X-Custom-Header" to "value")
+        headers = mapOf("X-Custom-Header" to "value"),
+        requestTimeoutMillis = 300_000
     )
 )
 ```

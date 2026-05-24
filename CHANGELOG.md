@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2026-05-24
+
+### Added
+- **Configurable timeouts** via `OllamaClientConfig` (`requestTimeoutMillis`, `connectTimeoutMillis`, `socketTimeoutMillis`).
+- Default `requestTimeoutMillis` set to **5 minutes** (300,000 ms) to better support LLM workloads.
+- New unit tests for timeout behavior in `OllamaClientTimeoutTest`.
+
+### Changed
+- Integrated `HttpTimeout` plugin in `OllamaClient` to support custom and default timeouts.
+
 ## [0.1.2] - 2026-04-30
 
 ### Added
@@ -31,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DSL-based configuration and Environment variable support (`OLLAMA_HOST`, `OLLAMA_API_KEY`).
 - Comprehensive test suite for all major endpoints.
 
+[0.1.3]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/tag/0.1.3
 [0.1.2]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/tag/0.1.2
 [0.1.1]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/tag/0.1.1
 [0.1.0]: https://github.com/Udhay-Adithya/ollama-kotlin/releases/tag/0.1.0
