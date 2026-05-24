@@ -17,6 +17,18 @@ public data class OllamaClientConfig(
 
     /** Headers applied to every request (e.g. Authorization). */
     val headers: Map<String, String> = emptyMap(),
+
+    /**
+     * Timeout for the entire request (including connection and data transfer) in milliseconds.
+     * Default is 5 minutes.
+     */
+    val requestTimeoutMillis: Long? = 300_000,
+
+    /** Timeout for establishing a connection in milliseconds. */
+    val connectTimeoutMillis: Long? = null,
+
+    /** Timeout for socket read/write operations in milliseconds. */
+    val socketTimeoutMillis: Long? = null,
 ) {
     public class Builder {
         /** Base URL of the Ollama server. `null` falls back to `OLLAMA_HOST` env or `http://127.0.0.1:11434`. */
@@ -25,9 +37,21 @@ public data class OllamaClientConfig(
         /** Mutable headers map for the DSL. */
         public val headers: MutableMap<String, String> = mutableMapOf()
 
+        /** Timeout for the entire request in milliseconds. */
+        public var requestTimeoutMillis: Long? = 300_000
+
+        /** Timeout for establishing a connection in milliseconds. */
+        public var connectTimeoutMillis: Long? = null
+
+        /** Timeout for socket read/write operations in milliseconds. */
+        public var socketTimeoutMillis: Long? = null
+
         public fun build(): OllamaClientConfig = OllamaClientConfig(
             host = host,
             headers = headers.toMap(),
+            requestTimeoutMillis = requestTimeoutMillis,
+            connectTimeoutMillis = connectTimeoutMillis,
+            socketTimeoutMillis = socketTimeoutMillis,
         )
     }
 }

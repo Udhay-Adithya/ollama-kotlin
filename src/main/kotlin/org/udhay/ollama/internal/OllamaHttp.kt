@@ -2,6 +2,7 @@ package org.udhay.ollama.internal
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.timeout
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
@@ -39,6 +40,11 @@ internal fun HttpRequestBuilder.applyConfig(config: OllamaClientConfig, path: St
     val host = config.host ?: OllamaEnv.host() ?: "http://127.0.0.1:11434"
     url(host.removeSuffix("/") + "/" + path.removePrefix("/"))
     config.headers.forEach { (k, v) -> header(k, v) }
+    timeout {
+        requestTimeoutMillis = config.requestTimeoutMillis
+        connectTimeoutMillis = config.connectTimeoutMillis
+        socketTimeoutMillis = config.socketTimeoutMillis
+    }
 }
 
 internal suspend inline fun <reified T> HttpClient.getJson(

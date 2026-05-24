@@ -3,6 +3,7 @@ package org.udhay.ollama
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -101,6 +102,7 @@ public class OllamaClient(
 
     internal val httpClient: HttpClient = HttpClient(engine ?: CIO.create()) {
         install(ContentNegotiation) { json(DefaultJson) }
+        install(HttpTimeout)
     }
 
     // ---- Generate ----
