@@ -40,3 +40,38 @@ public data class EmbedResponse(
     val error: String? = null,
 )
 
+/**
+ * Request body for `POST /api/embeddings` — the superseded single-prompt embeddings endpoint.
+ *
+ * Prefer [EmbedRequest] with `/api/embed`, which accepts batched input and returns a list of
+ * vectors. This exists for servers predating `/api/embed`.
+ *
+ * @property model Name of the embedding model.
+ * @property prompt Single text to embed.
+ * @property options Runtime options.
+ * @property keepAlive How long to keep the model loaded.
+ */
+@Serializable
+public data class EmbeddingsRequest(
+    val model: String,
+    val prompt: String,
+    @Serializable(with = OptionsSerializer::class)
+    val options: Options? = null,
+    @SerialName("keep_alive")
+    val keepAlive: JsonElement? = null,
+)
+
+/**
+ * Response from `POST /api/embeddings`.
+ *
+ * Note the shape difference from [EmbedResponse]: a single `embedding` vector rather than a list
+ * of `embeddings`. That mismatch is the source of ollama/ollama-js#228.
+ *
+ * @property embedding The embedding vector.
+ * @property error Error message, if the request failed.
+ */
+@Serializable
+public data class EmbeddingsResponse(
+    val embedding: List<Double>? = null,
+    val error: String? = null,
+)
