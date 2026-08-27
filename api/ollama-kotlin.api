@@ -1,0 +1,1500 @@
+public final class org/udhay/ollama/OllamaClient : java/io/Closeable {
+	public fun <init> (Lkotlin/jvm/functions/Function1;)V
+	public fun <init> (Lkotlin/jvm/functions/Function1;Lio/ktor/client/engine/HttpClientEngine;Z)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function1;Lio/ktor/client/engine/HttpClientEngine;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lorg/udhay/ollama/OllamaClientConfig;Lio/ktor/client/engine/HttpClientEngine;)V
+	public synthetic fun <init> (Lorg/udhay/ollama/OllamaClientConfig;Lio/ktor/client/engine/HttpClientEngine;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun blobExists (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun chat (Lorg/udhay/ollama/api/ChatRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun chatStream (Lorg/udhay/ollama/api/ChatRequest;)Lkotlinx/coroutines/flow/Flow;
+	public fun close ()V
+	public final fun copy (Lorg/udhay/ollama/api/CopyRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun create (Lorg/udhay/ollama/api/CreateRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun createBlob (Ljava/lang/String;Ljava/nio/file/Path;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun createBlob (Ljava/nio/file/Path;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun createBlob$default (Lorg/udhay/ollama/OllamaClient;Ljava/nio/file/Path;ZLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun createStream (Lorg/udhay/ollama/api/CreateRequest;)Lkotlinx/coroutines/flow/Flow;
+	public final fun delete (Lorg/udhay/ollama/api/DeleteRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun embed (Lorg/udhay/ollama/api/EmbedRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun embeddings (Lorg/udhay/ollama/api/EmbeddingsRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun generate (Lorg/udhay/ollama/api/GenerateRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun generateStream (Lorg/udhay/ollama/api/GenerateRequest;)Lkotlinx/coroutines/flow/Flow;
+	public final fun list (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun ping (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun ps (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun pull (Lorg/udhay/ollama/api/PullRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun pullStream (Lorg/udhay/ollama/api/PullRequest;)Lkotlinx/coroutines/flow/Flow;
+	public final fun push (Lorg/udhay/ollama/api/PushRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun pushStream (Lorg/udhay/ollama/api/PushRequest;)Lkotlinx/coroutines/flow/Flow;
+	public final fun show (Lorg/udhay/ollama/api/ShowRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun version (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun webFetch (Lorg/udhay/ollama/api/WebFetchRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun webSearch (Lorg/udhay/ollama/api/WebSearchRequest;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class org/udhay/ollama/OllamaClientConfig {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/util/Map;ZLjava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Map;ZLjava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun component3 ()Z
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/Long;
+	public final fun component6 ()Ljava/lang/Long;
+	public final fun component7 ()Ljava/lang/Long;
+	public final fun copy (Ljava/lang/String;Ljava/util/Map;ZLjava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;)Lorg/udhay/ollama/OllamaClientConfig;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/OllamaClientConfig;Ljava/lang/String;Ljava/util/Map;ZLjava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Long;ILjava/lang/Object;)Lorg/udhay/ollama/OllamaClientConfig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConnectTimeoutMillis ()Ljava/lang/Long;
+	public final fun getFollowRedirects ()Z
+	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getHost ()Ljava/lang/String;
+	public final fun getRequestTimeoutMillis ()Ljava/lang/Long;
+	public final fun getSocketTimeoutMillis ()Ljava/lang/Long;
+	public final fun getWebHost ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class org/udhay/ollama/OllamaClientConfig$Builder {
+	public fun <init> ()V
+	public final fun build ()Lorg/udhay/ollama/OllamaClientConfig;
+	public final fun getConnectTimeoutMillis ()Ljava/lang/Long;
+	public final fun getFollowRedirects ()Z
+	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getHost ()Ljava/lang/String;
+	public final fun getRequestTimeoutMillis ()Ljava/lang/Long;
+	public final fun getSocketTimeoutMillis ()Ljava/lang/Long;
+	public final fun getWebHost ()Ljava/lang/String;
+	public final fun setConnectTimeoutMillis (Ljava/lang/Long;)V
+	public final fun setFollowRedirects (Z)V
+	public final fun setHost (Ljava/lang/String;)V
+	public final fun setRequestTimeoutMillis (Ljava/lang/Long;)V
+	public final fun setSocketTimeoutMillis (Ljava/lang/Long;)V
+	public final fun setWebHost (Ljava/lang/String;)V
+}
+
+public final class org/udhay/ollama/OllamaException : java/lang/RuntimeException {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getResponseBody ()Ljava/lang/String;
+	public final fun getStatusCode ()Ljava/lang/Integer;
+}
+
+public final class org/udhay/ollama/OllamaKt {
+	public static final fun OllamaClient (Lkotlin/jvm/functions/Function1;)Lorg/udhay/ollama/OllamaClient;
+	public static final fun OllamaClient (Lorg/udhay/ollama/OllamaClientConfig;)Lorg/udhay/ollama/OllamaClient;
+	public static synthetic fun OllamaClient$default (Lorg/udhay/ollama/OllamaClientConfig;ILjava/lang/Object;)Lorg/udhay/ollama/OllamaClient;
+}
+
+public final class org/udhay/ollama/api/ChatRequest {
+	public static final field Companion Lorg/udhay/ollama/api/ChatRequest$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Ljava/lang/Integer;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Ljava/lang/Integer;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun component5 ()Ljava/lang/Boolean;
+	public final fun component6 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun component7 ()Ljava/lang/Boolean;
+	public final fun component8 ()Ljava/lang/Integer;
+	public final fun component9 ()Lorg/udhay/ollama/api/Options;
+	public final fun copy (Ljava/lang/String;Ljava/util/List;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Ljava/lang/Integer;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;)Lorg/udhay/ollama/api/ChatRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ChatRequest;Ljava/lang/String;Ljava/util/List;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Ljava/lang/Integer;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;ILjava/lang/Object;)Lorg/udhay/ollama/api/ChatRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFormat ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getKeepAlive ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getLogprobs ()Ljava/lang/Boolean;
+	public final fun getMessages ()Ljava/util/List;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getOptions ()Lorg/udhay/ollama/api/Options;
+	public final fun getStream ()Ljava/lang/Boolean;
+	public final fun getThink ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTools ()Ljava/util/List;
+	public final fun getTopLogprobs ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ChatRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ChatRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ChatRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ChatRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ChatRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ChatResponse {
+	public static final field Companion Lorg/udhay/ollama/api/ChatResponse$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Message;Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Message;Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/lang/Long;
+	public final fun component11 ()Ljava/lang/Integer;
+	public final fun component12 ()Ljava/lang/Long;
+	public final fun component13 ()Ljava/lang/Integer;
+	public final fun component14 ()Ljava/lang/Long;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lorg/udhay/ollama/api/Message;
+	public final fun component4 ()Ljava/lang/Boolean;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/util/List;
+	public final fun component9 ()Ljava/lang/Long;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Message;Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;)Lorg/udhay/ollama/api/ChatResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ChatResponse;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Message;Ljava/lang/Boolean;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;ILjava/lang/Object;)Lorg/udhay/ollama/api/ChatResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCreatedAt ()Ljava/lang/String;
+	public final fun getDone ()Ljava/lang/Boolean;
+	public final fun getDoneReason ()Ljava/lang/String;
+	public final fun getError ()Ljava/lang/String;
+	public final fun getEvalCount ()Ljava/lang/Integer;
+	public final fun getEvalDuration ()Ljava/lang/Long;
+	public final fun getLoadDuration ()Ljava/lang/Long;
+	public final fun getLogprobs ()Ljava/util/List;
+	public final fun getMessage ()Lorg/udhay/ollama/api/Message;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getPromptEvalCount ()Ljava/lang/Integer;
+	public final fun getPromptEvalDuration ()Ljava/lang/Long;
+	public final fun getThinking ()Ljava/lang/String;
+	public final fun getTotalDuration ()Ljava/lang/Long;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ChatResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ChatResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ChatResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ChatResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ChatResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/CopyRequest {
+	public static final field Companion Lorg/udhay/ollama/api/CopyRequest$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lorg/udhay/ollama/api/CopyRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/CopyRequest;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/CopyRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestination ()Ljava/lang/String;
+	public final fun getSource ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/CopyRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/CopyRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/CopyRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/CopyRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/CopyRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/CreateRequest {
+	public static final field Companion Lorg/udhay/ollama/api/CreateRequest$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/util/Map;
+	public final fun component11 ()Ljava/lang/Boolean;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun component8 ()Ljava/util/List;
+	public final fun component9 ()Ljava/util/Map;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;)Lorg/udhay/ollama/api/CreateRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/CreateRequest;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Ljava/util/Map;Ljava/util/Map;Ljava/lang/Boolean;ILjava/lang/Object;)Lorg/udhay/ollama/api/CreateRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAdapters ()Ljava/util/Map;
+	public final fun getFiles ()Ljava/util/Map;
+	public final fun getFromModel ()Ljava/lang/String;
+	public final fun getLicense ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getMessages ()Ljava/util/List;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getParameters ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getQuantize ()Ljava/lang/String;
+	public final fun getStream ()Ljava/lang/Boolean;
+	public final fun getSystem ()Ljava/lang/String;
+	public final fun getTemplate ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/CreateRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/CreateRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/CreateRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/CreateRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/CreateRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/DeleteRequest {
+	public static final field Companion Lorg/udhay/ollama/api/DeleteRequest$Companion;
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lorg/udhay/ollama/api/DeleteRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/DeleteRequest;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/DeleteRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getModel ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/DeleteRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/DeleteRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/DeleteRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/DeleteRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/DeleteRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/EmbedRequest {
+	public static final field Companion Lorg/udhay/ollama/api/EmbedRequest$Companion;
+	public fun <init> (Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun component3 ()Ljava/lang/Boolean;
+	public final fun component4 ()Lorg/udhay/ollama/api/Options;
+	public final fun component5 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun component6 ()Ljava/lang/Integer;
+	public final fun copy (Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;)Lorg/udhay/ollama/api/EmbedRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/EmbedRequest;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Integer;ILjava/lang/Object;)Lorg/udhay/ollama/api/EmbedRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDimensions ()Ljava/lang/Integer;
+	public final fun getInput ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getKeepAlive ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getOptions ()Lorg/udhay/ollama/api/Options;
+	public final fun getTruncate ()Ljava/lang/Boolean;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/EmbedRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/EmbedRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/EmbedRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/EmbedRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/EmbedRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/EmbedResponse {
+	public static final field Companion Lorg/udhay/ollama/api/EmbedResponse$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/util/List;Ljava/lang/String;)Lorg/udhay/ollama/api/EmbedResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/EmbedResponse;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/EmbedResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEmbeddings ()Ljava/util/List;
+	public final fun getError ()Ljava/lang/String;
+	public final fun getModel ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/EmbedResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/EmbedResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/EmbedResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/EmbedResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/EmbedResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/EmbeddingsRequest {
+	public static final field Companion Lorg/udhay/ollama/api/EmbeddingsRequest$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lorg/udhay/ollama/api/Options;
+	public final fun component4 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;)Lorg/udhay/ollama/api/EmbeddingsRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/EmbeddingsRequest;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;ILjava/lang/Object;)Lorg/udhay/ollama/api/EmbeddingsRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getKeepAlive ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getOptions ()Lorg/udhay/ollama/api/Options;
+	public final fun getPrompt ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/EmbeddingsRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/EmbeddingsRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/EmbeddingsRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/EmbeddingsRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/EmbeddingsRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/EmbeddingsResponse {
+	public static final field Companion Lorg/udhay/ollama/api/EmbeddingsResponse$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/util/List;Ljava/lang/String;)Lorg/udhay/ollama/api/EmbeddingsResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/EmbeddingsResponse;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/EmbeddingsResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEmbedding ()Ljava/util/List;
+	public final fun getError ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/EmbeddingsResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/EmbeddingsResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/EmbeddingsResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/EmbeddingsResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/EmbeddingsResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/GenerateRequest {
+	public static final field Companion Lorg/udhay/ollama/api/GenerateRequest$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Ljava/lang/Integer;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Ljava/lang/Integer;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/lang/Boolean;
+	public final fun component11 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun component12 ()Ljava/lang/Boolean;
+	public final fun component13 ()Ljava/lang/Integer;
+	public final fun component14 ()Lorg/udhay/ollama/api/Options;
+	public final fun component15 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/lang/Boolean;
+	public final fun component8 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun component9 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Ljava/lang/Integer;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;)Lorg/udhay/ollama/api/GenerateRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/GenerateRequest;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Ljava/lang/Boolean;Lkotlinx/serialization/json/JsonElement;Ljava/lang/Boolean;Ljava/lang/Integer;Lorg/udhay/ollama/api/Options;Lkotlinx/serialization/json/JsonElement;ILjava/lang/Object;)Lorg/udhay/ollama/api/GenerateRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContext ()Ljava/util/List;
+	public final fun getFormat ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getImages ()Ljava/util/List;
+	public final fun getKeepAlive ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getLogprobs ()Ljava/lang/Boolean;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getOptions ()Lorg/udhay/ollama/api/Options;
+	public final fun getPrompt ()Ljava/lang/String;
+	public final fun getRaw ()Ljava/lang/Boolean;
+	public final fun getStream ()Ljava/lang/Boolean;
+	public final fun getSuffix ()Ljava/lang/String;
+	public final fun getSystem ()Ljava/lang/String;
+	public final fun getTemplate ()Ljava/lang/String;
+	public final fun getThink ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getTopLogprobs ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/GenerateRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/GenerateRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/GenerateRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/GenerateRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/GenerateRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/GenerateResponse {
+	public static final field Companion Lorg/udhay/ollama/api/GenerateResponse$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/lang/Long;
+	public final fun component11 ()Ljava/lang/Long;
+	public final fun component12 ()Ljava/lang/Integer;
+	public final fun component13 ()Ljava/lang/Long;
+	public final fun component14 ()Ljava/lang/Integer;
+	public final fun component15 ()Ljava/lang/Long;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/Boolean;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;)Lorg/udhay/ollama/api/GenerateResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/GenerateResponse;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;Ljava/lang/Integer;Ljava/lang/Long;ILjava/lang/Object;)Lorg/udhay/ollama/api/GenerateResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContext ()Ljava/util/List;
+	public final fun getCreatedAt ()Ljava/lang/String;
+	public final fun getDone ()Ljava/lang/Boolean;
+	public final fun getDoneReason ()Ljava/lang/String;
+	public final fun getError ()Ljava/lang/String;
+	public final fun getEvalCount ()Ljava/lang/Integer;
+	public final fun getEvalDuration ()Ljava/lang/Long;
+	public final fun getLoadDuration ()Ljava/lang/Long;
+	public final fun getLogprobs ()Ljava/util/List;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getPromptEvalCount ()Ljava/lang/Integer;
+	public final fun getPromptEvalDuration ()Ljava/lang/Long;
+	public final fun getResponse ()Ljava/lang/String;
+	public final fun getThinking ()Ljava/lang/String;
+	public final fun getTotalDuration ()Ljava/lang/Long;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/GenerateResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/GenerateResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/GenerateResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/GenerateResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/GenerateResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ListResponse {
+	public static final field Companion Lorg/udhay/ollama/api/ListResponse$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lorg/udhay/ollama/api/ListResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ListResponse;Ljava/util/List;ILjava/lang/Object;)Lorg/udhay/ollama/api/ListResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getModels ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ListResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ListResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ListResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ListResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ListResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/Logprob {
+	public static final field Companion Lorg/udhay/ollama/api/Logprob$Companion;
+	public fun <init> (Ljava/lang/String;DLjava/util/List;)V
+	public synthetic fun <init> (Ljava/lang/String;DLjava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()D
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;DLjava/util/List;)Lorg/udhay/ollama/api/Logprob;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/Logprob;Ljava/lang/String;DLjava/util/List;ILjava/lang/Object;)Lorg/udhay/ollama/api/Logprob;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLogprob ()D
+	public final fun getToken ()Ljava/lang/String;
+	public final fun getTopLogprobs ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/Logprob$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/Logprob$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/Logprob;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/Logprob;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/Logprob$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/Message {
+	public static final field Companion Lorg/udhay/ollama/api/Message$Companion;
+	public fun <init> (Lorg/udhay/ollama/api/MessageRole;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;)V
+	public synthetic fun <init> (Lorg/udhay/ollama/api/MessageRole;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lorg/udhay/ollama/api/MessageRole;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/lang/String;
+	public final fun copy (Lorg/udhay/ollama/api/MessageRole;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;)Lorg/udhay/ollama/api/Message;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/Message;Lorg/udhay/ollama/api/MessageRole;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/Message;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContent ()Ljava/lang/String;
+	public final fun getImages ()Ljava/util/List;
+	public final fun getRole ()Lorg/udhay/ollama/api/MessageRole;
+	public final fun getThinking ()Ljava/lang/String;
+	public final fun getToolCallId ()Ljava/lang/String;
+	public final fun getToolCalls ()Ljava/util/List;
+	public final fun getToolName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/Message$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/Message$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/Message;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/Message;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/Message$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/MessageRole : java/lang/Enum {
+	public static final field Assistant Lorg/udhay/ollama/api/MessageRole;
+	public static final field Companion Lorg/udhay/ollama/api/MessageRole$Companion;
+	public static final field System Lorg/udhay/ollama/api/MessageRole;
+	public static final field Tool Lorg/udhay/ollama/api/MessageRole;
+	public static final field User Lorg/udhay/ollama/api/MessageRole;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lorg/udhay/ollama/api/MessageRole;
+	public static fun values ()[Lorg/udhay/ollama/api/MessageRole;
+}
+
+public final class org/udhay/ollama/api/MessageRole$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ModelDetails {
+	public static final field Companion Lorg/udhay/ollama/api/ModelDetails$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;)Lorg/udhay/ollama/api/ModelDetails;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ModelDetails;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/ModelDetails;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFamilies ()Ljava/util/List;
+	public final fun getFamily ()Ljava/lang/String;
+	public final fun getFormat ()Ljava/lang/String;
+	public final fun getParameterSize ()Ljava/lang/String;
+	public final fun getParentModel ()Ljava/lang/String;
+	public final fun getQuantizationLevel ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ModelDetails$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ModelDetails$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ModelDetails;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ModelDetails;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ModelDetails$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ModelTag {
+	public static final field Companion Lorg/udhay/ollama/api/ModelTag$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/Long;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;)Lorg/udhay/ollama/api/ModelTag;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ModelTag;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;ILjava/lang/Object;)Lorg/udhay/ollama/api/ModelTag;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDetails ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getDigest ()Ljava/lang/String;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getModifiedAt ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSize ()Ljava/lang/Long;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ModelTag$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ModelTag$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ModelTag;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ModelTag;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ModelTag$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/Options {
+	public static final field Companion Lorg/udhay/ollama/api/Options$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Boolean;Ljava/util/List;Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Boolean;Ljava/util/List;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Boolean;
+	public final fun component10 ()Ljava/lang/Boolean;
+	public final fun component11 ()Ljava/lang/Boolean;
+	public final fun component12 ()Ljava/lang/Boolean;
+	public final fun component13 ()Ljava/lang/Integer;
+	public final fun component14 ()Ljava/lang/Integer;
+	public final fun component15 ()Ljava/lang/Integer;
+	public final fun component16 ()Ljava/lang/Integer;
+	public final fun component17 ()Ljava/lang/Integer;
+	public final fun component18 ()Ljava/lang/Double;
+	public final fun component19 ()Ljava/lang/Double;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun component20 ()Ljava/lang/Double;
+	public final fun component21 ()Ljava/lang/Integer;
+	public final fun component22 ()Ljava/lang/Double;
+	public final fun component23 ()Ljava/lang/Double;
+	public final fun component24 ()Ljava/lang/Double;
+	public final fun component25 ()Ljava/lang/Double;
+	public final fun component26 ()Ljava/lang/Integer;
+	public final fun component27 ()Ljava/lang/Double;
+	public final fun component28 ()Ljava/lang/Double;
+	public final fun component29 ()Ljava/lang/Boolean;
+	public final fun component3 ()Ljava/lang/Integer;
+	public final fun component30 ()Ljava/util/List;
+	public final fun component31 ()Ljava/util/Map;
+	public final fun component4 ()Ljava/lang/Integer;
+	public final fun component5 ()Ljava/lang/Integer;
+	public final fun component6 ()Ljava/lang/Boolean;
+	public final fun component7 ()Ljava/lang/Boolean;
+	public final fun component8 ()Ljava/lang/Boolean;
+	public final fun component9 ()Ljava/lang/Boolean;
+	public final fun copy (Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Boolean;Ljava/util/List;Ljava/util/Map;)Lorg/udhay/ollama/api/Options;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/Options;Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Integer;Ljava/lang/Double;Ljava/lang/Double;Ljava/lang/Boolean;Ljava/util/List;Ljava/util/Map;ILjava/lang/Object;)Lorg/udhay/ollama/api/Options;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEmbeddingOnly ()Ljava/lang/Boolean;
+	public final fun getExtra ()Ljava/util/Map;
+	public final fun getF16Kv ()Ljava/lang/Boolean;
+	public final fun getFrequencyPenalty ()Ljava/lang/Double;
+	public final fun getLogitsAll ()Ljava/lang/Boolean;
+	public final fun getLowVram ()Ljava/lang/Boolean;
+	public final fun getMainGpu ()Ljava/lang/Integer;
+	public final fun getMirostat ()Ljava/lang/Integer;
+	public final fun getMirostatEta ()Ljava/lang/Double;
+	public final fun getMirostatTau ()Ljava/lang/Double;
+	public final fun getNumBatch ()Ljava/lang/Integer;
+	public final fun getNumCtx ()Ljava/lang/Integer;
+	public final fun getNumGpu ()Ljava/lang/Integer;
+	public final fun getNumKeep ()Ljava/lang/Integer;
+	public final fun getNumPredict ()Ljava/lang/Integer;
+	public final fun getNumThread ()Ljava/lang/Integer;
+	public final fun getNuma ()Ljava/lang/Boolean;
+	public final fun getPenalizeNewline ()Ljava/lang/Boolean;
+	public final fun getPresencePenalty ()Ljava/lang/Double;
+	public final fun getRepeatLastN ()Ljava/lang/Integer;
+	public final fun getRepeatPenalty ()Ljava/lang/Double;
+	public final fun getSeed ()Ljava/lang/Integer;
+	public final fun getStop ()Ljava/util/List;
+	public final fun getTemperature ()Ljava/lang/Double;
+	public final fun getTfsZ ()Ljava/lang/Double;
+	public final fun getTopK ()Ljava/lang/Integer;
+	public final fun getTopP ()Ljava/lang/Double;
+	public final fun getTypicalP ()Ljava/lang/Double;
+	public final fun getUseMlock ()Ljava/lang/Boolean;
+	public final fun getUseMmap ()Ljava/lang/Boolean;
+	public final fun getVocabOnly ()Ljava/lang/Boolean;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/Options$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/Options$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/Options;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/Options;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/Options$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/OptionsSerializer : kotlinx/serialization/json/JsonTransformingSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/OptionsSerializer;
+}
+
+public final class org/udhay/ollama/api/ProcessModel {
+	public static final field Companion Lorg/udhay/ollama/api/ProcessModel$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ModelDetails;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ModelDetails;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/Long;
+	public final fun component4 ()Ljava/lang/Long;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Lorg/udhay/ollama/api/ModelDetails;
+	public final fun component8 ()Ljava/lang/Integer;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ModelDetails;Ljava/lang/Integer;)Lorg/udhay/ollama/api/ProcessModel;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ProcessModel;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ModelDetails;Ljava/lang/Integer;ILjava/lang/Object;)Lorg/udhay/ollama/api/ProcessModel;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContextLength ()Ljava/lang/Integer;
+	public final fun getDetails ()Lorg/udhay/ollama/api/ModelDetails;
+	public final fun getDigest ()Ljava/lang/String;
+	public final fun getExpiresAt ()Ljava/lang/String;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSize ()Ljava/lang/Long;
+	public final fun getSizeVram ()Ljava/lang/Long;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ProcessModel$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ProcessModel$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ProcessModel;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ProcessModel;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ProcessModel$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ProcessResponse {
+	public static final field Companion Lorg/udhay/ollama/api/ProcessResponse$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lorg/udhay/ollama/api/ProcessResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ProcessResponse;Ljava/util/List;ILjava/lang/Object;)Lorg/udhay/ollama/api/ProcessResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getModels ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ProcessResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ProcessResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ProcessResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ProcessResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ProcessResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ProgressResponse {
+	public static final field Companion Lorg/udhay/ollama/api/ProgressResponse$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/Long;
+	public final fun component4 ()Ljava/lang/Long;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;)Lorg/udhay/ollama/api/ProgressResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ProgressResponse;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Long;Ljava/lang/Long;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/ProgressResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCompleted ()Ljava/lang/Long;
+	public final fun getDigest ()Ljava/lang/String;
+	public final fun getError ()Ljava/lang/String;
+	public final fun getStatus ()Ljava/lang/String;
+	public final fun getTotal ()Ljava/lang/Long;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ProgressResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ProgressResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ProgressResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ProgressResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ProgressResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/PullRequest {
+	public static final field Companion Lorg/udhay/ollama/api/PullRequest$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/Boolean;
+	public final fun component3 ()Ljava/lang/Boolean;
+	public final fun copy (Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;)Lorg/udhay/ollama/api/PullRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/PullRequest;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;ILjava/lang/Object;)Lorg/udhay/ollama/api/PullRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getInsecure ()Ljava/lang/Boolean;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getStream ()Ljava/lang/Boolean;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/PullRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/PullRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/PullRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/PullRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/PullRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/PushRequest {
+	public static final field Companion Lorg/udhay/ollama/api/PushRequest$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/Boolean;
+	public final fun component3 ()Ljava/lang/Boolean;
+	public final fun copy (Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;)Lorg/udhay/ollama/api/PushRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/PushRequest;Ljava/lang/String;Ljava/lang/Boolean;Ljava/lang/Boolean;ILjava/lang/Object;)Lorg/udhay/ollama/api/PushRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getInsecure ()Ljava/lang/Boolean;
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getStream ()Ljava/lang/Boolean;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/PushRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/PushRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/PushRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/PushRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/PushRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ShowRequest {
+	public static final field Companion Lorg/udhay/ollama/api/ShowRequest$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Options;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Options;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Lorg/udhay/ollama/api/Options;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Options;)Lorg/udhay/ollama/api/ShowRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ShowRequest;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/Options;ILjava/lang/Object;)Lorg/udhay/ollama/api/ShowRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getModel ()Ljava/lang/String;
+	public final fun getOptions ()Lorg/udhay/ollama/api/Options;
+	public final fun getSystem ()Ljava/lang/String;
+	public final fun getTemplate ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ShowRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ShowRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ShowRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ShowRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ShowRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ShowResponse {
+	public static final field Companion Lorg/udhay/ollama/api/ShowResponse$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ModelDetails;Ljava/util/List;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ModelDetails;Ljava/util/List;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/util/List;
+	public final fun component11 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Lorg/udhay/ollama/api/ModelDetails;
+	public final fun component7 ()Ljava/util/List;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ModelDetails;Ljava/util/List;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;)Lorg/udhay/ollama/api/ShowResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ShowResponse;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ModelDetails;Ljava/util/List;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;Ljava/util/List;Lkotlinx/serialization/json/JsonElement;ILjava/lang/Object;)Lorg/udhay/ollama/api/ShowResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCapabilities ()Ljava/util/List;
+	public final fun getDetails ()Lorg/udhay/ollama/api/ModelDetails;
+	public final fun getLicense ()Ljava/lang/String;
+	public final fun getMessages ()Ljava/util/List;
+	public final fun getModelInfo ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getModelfile ()Ljava/lang/String;
+	public final fun getModifiedAt ()Ljava/lang/String;
+	public final fun getParameters ()Ljava/lang/String;
+	public final fun getProjectorInfo ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getSystem ()Ljava/lang/String;
+	public final fun getTemplate ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ShowResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ShowResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ShowResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ShowResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ShowResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/StatusResponse {
+	public static final field Companion Lorg/udhay/ollama/api/StatusResponse$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lorg/udhay/ollama/api/StatusResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/StatusResponse;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/StatusResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Ljava/lang/String;
+	public final fun getStatus ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/StatusResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/StatusResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/StatusResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/StatusResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/StatusResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/TokenLogprob {
+	public static final field Companion Lorg/udhay/ollama/api/TokenLogprob$Companion;
+	public fun <init> (Ljava/lang/String;D)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()D
+	public final fun copy (Ljava/lang/String;D)Lorg/udhay/ollama/api/TokenLogprob;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/TokenLogprob;Ljava/lang/String;DILjava/lang/Object;)Lorg/udhay/ollama/api/TokenLogprob;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLogprob ()D
+	public final fun getToken ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/TokenLogprob$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/TokenLogprob$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/TokenLogprob;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/TokenLogprob;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/TokenLogprob$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/Tool {
+	public static final field Companion Lorg/udhay/ollama/api/Tool$Companion;
+	public fun <init> (Ljava/lang/String;Lorg/udhay/ollama/api/ToolFunction;)V
+	public synthetic fun <init> (Ljava/lang/String;Lorg/udhay/ollama/api/ToolFunction;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lorg/udhay/ollama/api/ToolFunction;
+	public final fun copy (Ljava/lang/String;Lorg/udhay/ollama/api/ToolFunction;)Lorg/udhay/ollama/api/Tool;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/Tool;Ljava/lang/String;Lorg/udhay/ollama/api/ToolFunction;ILjava/lang/Object;)Lorg/udhay/ollama/api/Tool;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFunction ()Lorg/udhay/ollama/api/ToolFunction;
+	public final fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/Tool$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/Tool$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/Tool;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/Tool;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/Tool$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ToolBuilderKt {
+	public static final fun tool (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lorg/udhay/ollama/api/Tool;
+	public static synthetic fun tool$default (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lorg/udhay/ollama/api/Tool;
+}
+
+public final class org/udhay/ollama/api/ToolCall {
+	public static final field Companion Lorg/udhay/ollama/api/ToolCall$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ToolCallFunction;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ToolCallFunction;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lorg/udhay/ollama/api/ToolCallFunction;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ToolCallFunction;)Lorg/udhay/ollama/api/ToolCall;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ToolCall;Ljava/lang/String;Ljava/lang/String;Lorg/udhay/ollama/api/ToolCallFunction;ILjava/lang/Object;)Lorg/udhay/ollama/api/ToolCall;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFunction ()Lorg/udhay/ollama/api/ToolCallFunction;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ToolCall$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ToolCall$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ToolCall;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ToolCall;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ToolCall$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ToolCallFunction {
+	public static final field Companion Lorg/udhay/ollama/api/ToolCallFunction$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun copy (Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;)Lorg/udhay/ollama/api/ToolCallFunction;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ToolCallFunction;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;ILjava/lang/Object;)Lorg/udhay/ollama/api/ToolCallFunction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getArguments ()Lkotlinx/serialization/json/JsonElement;
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ToolCallFunction$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ToolCallFunction$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ToolCallFunction;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ToolCallFunction;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ToolCallFunction$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ToolFunction {
+	public static final field Companion Lorg/udhay/ollama/api/ToolFunction$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lkotlinx/serialization/json/JsonElement;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;)Lorg/udhay/ollama/api/ToolFunction;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/ToolFunction;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonElement;ILjava/lang/Object;)Lorg/udhay/ollama/api/ToolFunction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getParameters ()Lkotlinx/serialization/json/JsonElement;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/ToolFunction$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/ToolFunction$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/ToolFunction;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/ToolFunction;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ToolFunction$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/ToolParametersBuilder {
+	public fun <init> ()V
+	public final fun array (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V
+	public static synthetic fun array$default (Lorg/udhay/ollama/api/ToolParametersBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun boolean (Ljava/lang/String;Ljava/lang/String;Z)V
+	public static synthetic fun boolean$default (Lorg/udhay/ollama/api/ToolParametersBuilder;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun integer (Ljava/lang/String;Ljava/lang/String;Z)V
+	public static synthetic fun integer$default (Lorg/udhay/ollama/api/ToolParametersBuilder;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun number (Ljava/lang/String;Ljava/lang/String;Z)V
+	public static synthetic fun number$default (Lorg/udhay/ollama/api/ToolParametersBuilder;Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)V
+	public final fun obj (Ljava/lang/String;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;)V
+	public static synthetic fun obj$default (Lorg/udhay/ollama/api/ToolParametersBuilder;Ljava/lang/String;Ljava/lang/String;ZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public final fun raw (Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;Z)V
+	public static synthetic fun raw$default (Lorg/udhay/ollama/api/ToolParametersBuilder;Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;ZILjava/lang/Object;)V
+	public final fun string (Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Z)V
+	public static synthetic fun string$default (Lorg/udhay/ollama/api/ToolParametersBuilder;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;ZILjava/lang/Object;)V
+}
+
+public final class org/udhay/ollama/api/ToolingKt {
+	public static final fun argumentsObject (Lorg/udhay/ollama/api/ToolCall;)Lkotlinx/serialization/json/JsonObject;
+	public static final fun functionName (Lorg/udhay/ollama/api/ToolCall;)Ljava/lang/String;
+	public static final fun getHasToolCalls (Lorg/udhay/ollama/api/Message;)Z
+	public static final fun getToolCalls (Lorg/udhay/ollama/api/ChatResponse;)Ljava/util/List;
+}
+
+public final class org/udhay/ollama/api/VersionResponse {
+	public static final field Companion Lorg/udhay/ollama/api/VersionResponse$Companion;
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lorg/udhay/ollama/api/VersionResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/VersionResponse;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/VersionResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getVersion ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/VersionResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/VersionResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/VersionResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/VersionResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/VersionResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/WebFetchRequest {
+	public static final field Companion Lorg/udhay/ollama/api/WebFetchRequest$Companion;
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lorg/udhay/ollama/api/WebFetchRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/WebFetchRequest;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/WebFetchRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/WebFetchRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/WebFetchRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/WebFetchRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/WebFetchRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/WebFetchRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/WebFetchResponse {
+	public static final field Companion Lorg/udhay/ollama/api/WebFetchResponse$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;)Lorg/udhay/ollama/api/WebFetchResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/WebFetchResponse;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/WebFetchResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContent ()Ljava/lang/String;
+	public final fun getError ()Ljava/lang/String;
+	public final fun getLinks ()Ljava/util/List;
+	public final fun getTitle ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/WebFetchResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/WebFetchResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/WebFetchResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/WebFetchResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/WebFetchResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/WebSearchRequest {
+	public static final field Companion Lorg/udhay/ollama/api/WebSearchRequest$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/Integer;
+	public final fun copy (Ljava/lang/String;Ljava/lang/Integer;)Lorg/udhay/ollama/api/WebSearchRequest;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/WebSearchRequest;Ljava/lang/String;Ljava/lang/Integer;ILjava/lang/Object;)Lorg/udhay/ollama/api/WebSearchRequest;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxResults ()Ljava/lang/Integer;
+	public final fun getQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/WebSearchRequest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/WebSearchRequest$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/WebSearchRequest;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/WebSearchRequest;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/WebSearchRequest$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/WebSearchResponse {
+	public static final field Companion Lorg/udhay/ollama/api/WebSearchResponse$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/util/List;Ljava/lang/String;)Lorg/udhay/ollama/api/WebSearchResponse;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/WebSearchResponse;Ljava/util/List;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/WebSearchResponse;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Ljava/lang/String;
+	public final fun getResults ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/WebSearchResponse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/WebSearchResponse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/WebSearchResponse;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/WebSearchResponse;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/WebSearchResponse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/WebSearchResult {
+	public static final field Companion Lorg/udhay/ollama/api/WebSearchResult$Companion;
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lorg/udhay/ollama/api/WebSearchResult;
+	public static synthetic fun copy$default (Lorg/udhay/ollama/api/WebSearchResult;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lorg/udhay/ollama/api/WebSearchResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContent ()Ljava/lang/String;
+	public final fun getTitle ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class org/udhay/ollama/api/WebSearchResult$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lorg/udhay/ollama/api/WebSearchResult$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lorg/udhay/ollama/api/WebSearchResult;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lorg/udhay/ollama/api/WebSearchResult;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/api/WebSearchResult$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class org/udhay/ollama/util/BlobsKt {
+	public static final fun sha256DigestOf (Ljava/io/InputStream;)Ljava/lang/String;
+	public static final fun sha256DigestOf (Ljava/nio/file/Path;)Ljava/lang/String;
+}
+
+public final class org/udhay/ollama/util/ImagesKt {
+	public static final fun image (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun imageFromBase64 (Ljava/lang/String;)Ljava/lang/String;
+	public static final fun imageFromBytes ([B)Ljava/lang/String;
+	public static final fun imageFromPath (Ljava/nio/file/Path;)Ljava/lang/String;
+	public static final fun imageFromStream (Ljava/io/InputStream;)Ljava/lang/String;
+}
+
