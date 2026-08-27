@@ -19,7 +19,7 @@ import kotlinx.serialization.json.JsonElement
  * @property stream `true` to receive tokens as they are generated via NDJSON streaming.
  *   Ignored by [org.udhay.ollama.OllamaClient.generate], which always sends `false`; use
  *   [org.udhay.ollama.OllamaClient.generateStream] to stream.
- * @property think Enable extended thinking. Pass `true`, or a level (`"high"`, `"medium"`, `"low"`).
+ * @property think Enable extended thinking. Pass `true`, or a level (`"low"`, `"medium"`, `"high"`, `"max"`).
  * @property logprobs Whether to return log probabilities for each generated token.
  * @property topLogprobs Number of top alternative tokens to include when [logprobs] is `true`.
  * @property options Runtime options (temperature, top_k, etc.) as a JSON object.

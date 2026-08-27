@@ -14,7 +14,7 @@ import kotlinx.serialization.json.JsonElement
  * @property stream `true` to receive tokens as they are generated via NDJSON streaming.
  *   Ignored by [org.udhay.ollama.OllamaClient.chat], which always sends `false`; use
  *   [org.udhay.ollama.OllamaClient.chatStream] to stream.
- * @property think Enable extended thinking. Pass `true`, or a level (`"high"`, `"medium"`, `"low"`).
+ * @property think Enable extended thinking. Pass `true`, or a level (`"low"`, `"medium"`, `"high"`, `"max"`).
  * @property logprobs Whether to return log probabilities for each generated token.
  * @property topLogprobs Number of top alternative tokens to include when [logprobs] is `true`.
  * @property options Runtime options (temperature, top_k, etc.) as a JSON object.
@@ -48,7 +48,8 @@ public data class ChatRequest(
  * @property done `true` when the response is complete.
  * @property doneReason Reason the model stopped generating (e.g. `"stop"`, `"length"`).
  * @property error Error message, if the request failed.
- * @property thinking The model's chain-of-thought reasoning, if extended thinking was enabled.
+ * @property thinking Reasoning as returned by the `/api/generate` response shape. For `/api/chat`
+ *   the server puts reasoning on the message instead — read [Message.thinking].
  * @property logprobs Per-token log probabilities, when requested.
  * @property totalDuration Total time spent in nanoseconds.
  * @property loadDuration Time spent loading the model in nanoseconds.

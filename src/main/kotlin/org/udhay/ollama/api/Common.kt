@@ -57,6 +57,8 @@ public data class ToolCall(
  *
  * @property role The role of the message author.
  * @property content Text content of the message.
+ * @property thinking The model's reasoning for this message, present only when thinking is enabled.
+ *   This is where `/api/chat` returns reasoning; [ChatResponse.thinking] is the `/api/generate` shape.
  * @property images Base64-encoded images attached to this message (for multimodal models).
  * @property toolName Name of the tool that produced this message (when [role] is [MessageRole.Tool]).
  * @property toolCalls Tool call requests produced by the model (when [role] is [MessageRole.Assistant]).
@@ -66,6 +68,7 @@ public data class ToolCall(
 public data class Message(
     val role: MessageRole,
     val content: String? = null,
+    val thinking: String? = null,
     val images: List<String>? = null,
 
     @SerialName("tool_name")

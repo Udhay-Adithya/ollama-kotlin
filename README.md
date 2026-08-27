@@ -324,10 +324,11 @@ val response = client.chat(
         messages = listOf(
             Message(role = MessageRole.User, content = "Solve: 15 * 23 + 47")
         ),
-        think = JsonPrimitive(true) // or JsonPrimitive("high"), "medium", "low"
+        think = JsonPrimitive(true) // or JsonPrimitive("low"), "medium", "high", "max"
     )
 )
-println("Thinking: ${response.thinking}")
+// /api/chat returns reasoning on the message; /api/generate returns it at the top level
+println("Thinking: ${response.message?.thinking}")
 println("Answer: ${response.message?.content}")
 ```
 

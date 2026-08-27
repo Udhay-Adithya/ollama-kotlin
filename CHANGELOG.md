@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- `Message` was missing `thinking`, so reasoning returned by `/api/chat` was silently discarded by
+  `ignoreUnknownKeys`. `ChatResponse.thinking` is the `/api/generate` shape and is always `null` for
+  chat. Read chat reasoning from `response.message?.thinking`.
 - Hosts without a scheme produced invalid request URLs. `OLLAMA_HOST=127.0.0.1:11434` — the form
   Ollama documents — became `localhost://localhost/11434/api/chat` or threw. Hosts are now
   normalized: a missing scheme defaults to `http`, a missing port to `11434`, a bare `:port` binds
