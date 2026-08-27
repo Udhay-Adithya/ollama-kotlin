@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   through a proxy or gateway.
 
 ### Added
+- An opt-in integration suite (`OLLAMA_INTEGRATION_TESTS=true`) exercising a real `ollama serve`,
+  plus a scheduled `Integration` workflow that installs Ollama and runs it. The mock-based suite
+  locks in whatever the client already believes about the wire protocol, so a wrong belief passes
+  its own tests — which is how `chat()` shipped returning empty strings.
 - Binary compatibility validation via the Kotlin `binary-compatibility-validator` plugin, with the
   public ABI committed at `api/ollama-kotlin.api`. `apiCheck` runs as part of `build`, so CI fails
   a PR that changes the public surface without an accompanying `./gradlew apiDump`.
