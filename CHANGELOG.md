@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   through a proxy or gateway.
 
 ### Added
+- A `tool(name, description) { ... }` builder that generates a tool's JSON Schema from typed
+  parameter declarations — `string`, `number`, `integer`, `boolean`, `array`, nested `obj`, and
+  `raw` for schema fragments the helpers do not cover. Parameters are required unless opted out,
+  so the `required` array is maintained automatically instead of by hand.
 - `Options` now carries the full documented option set as typed fields — `temperature`, `topK`,
   `numCtx`, `seed`, `numPredict`, `repeatPenalty`, `mirostat`, `stop` and the rest — serialized to
   their snake_case wire names. `Options.extra` passes through options newer than this library,

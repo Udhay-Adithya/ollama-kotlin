@@ -300,28 +300,16 @@ browser-sourced strings through `imageFromBase64`.
 
 ### Tool Calling
 
-Define tools and let the model invoke them:
+Define tools and let the model invoke them. The `tool` builder generates the JSON Schema and
+tracks the `required` list for you:
 
 ```kotlin
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
+import org.udhay.ollama.api.tool
 
-val addTool = Tool(
-    function = ToolFunction(
-        name = "add",
-        description = "Adds two numbers",
-        parameters = buildJsonObject {
-            put("type", "object")
-            put("properties", buildJsonObject {
-                put("a", buildJsonObject { put("type", "number") })
-                put("b", buildJsonObject { put("type", "number") })
-            })
-            put("required", kotlinx.serialization.json.JsonArray(listOf(
-                JsonPrimitive("a"), JsonPrimitive("b")
-            )))
-        }
-    )
-)
+val addTool = tool("add", "Adds two numbers") {
+    number("a", "First addend")
+    number("b", "Second addend")
+}
 
 val response = client.chat(
     ChatRequest(
@@ -343,6 +331,27 @@ for (call in response.toolCalls) {
     println("Arguments: ${call.argumentsObject()}")
 }
 ```
+
+Parameters are required unless you say otherwise, and the builder covers the usual shapes:
+
+```kotlin
+val weatherTool = tool("get_weather", "Looks up the current weather") {
+    string("city", "City name")
+    string("unit", "Temperature unit", enum = listOf("celsius", "fahrenheit"), required = false)
+    integer("days", "Forecast length in days", required = false)
+    boolean("include_hourly", required = false)
+    array("metrics", itemType = "string", description = "Which metrics to return", required = false)
+
+    obj("origin", "Where the request came from", required = false) {
+        string("lat")
+        string("lon")
+    }
+}
+```
+
+For a schema the helpers do not cover — `oneOf`, `$ref`, tuple-typed arrays — use `raw(name, schema)`
+with a `JsonObject`. You can still construct `Tool(function = ToolFunction(...))` by hand if you
+prefer full control.
 
 ### Structured Output
 
