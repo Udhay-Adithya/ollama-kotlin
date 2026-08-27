@@ -17,6 +17,8 @@ import kotlinx.serialization.json.JsonElement
  * @property format Constrain the output format. Pass a JSON Schema object for structured output.
  * @property images Base64-encoded images for multimodal models.
  * @property stream `true` to receive tokens as they are generated via NDJSON streaming.
+ *   Ignored by [org.udhay.ollama.OllamaClient.generate], which always sends `false`; use
+ *   [org.udhay.ollama.OllamaClient.generateStream] to stream.
  * @property think Enable extended thinking. Pass `true`, or a level (`"high"`, `"medium"`, `"low"`).
  * @property logprobs Whether to return log probabilities for each generated token.
  * @property topLogprobs Number of top alternative tokens to include when [logprobs] is `true`.
