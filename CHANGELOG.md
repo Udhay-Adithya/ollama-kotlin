@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   through a proxy or gateway.
 
 ### Added
+- Image-generation support on `/api/generate`: `width`, `height` and `steps` on `GenerateRequest`,
+  and `image`, `completed` and `total` on `GenerateResponse`. Without the response fields a
+  generated image was silently discarded by `ignoreUnknownKeys`.
+- `ShowRequest.verbose`, which populates the `model_info` tokenizer fields that come back empty
+  otherwise.
 - An opt-in integration suite (`OLLAMA_INTEGRATION_TESTS=true`) exercising a real `ollama serve`,
   plus a scheduled `Integration` workflow that installs Ollama and runs it. The mock-based suite
   locks in whatever the client already believes about the wire protocol, so a wrong belief passes
