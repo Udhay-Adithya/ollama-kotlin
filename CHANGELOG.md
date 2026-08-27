@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- `chat()` and `generate()` returned empty content. `/api/chat` and `/api/generate` stream by
+  default, so omitting `stream` made the server reply with NDJSON and the client returned only the
+  final chunk — which carries empty content. The one-shot methods now send `"stream": false`
+  explicitly. `create()`, `pull()` and `push()` send it too, for consistency.
+
 ## [0.1.3] - 2026-05-24
 
 ### Added
@@ -41,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DSL-based configuration and Environment variable support (`OLLAMA_HOST`, `OLLAMA_API_KEY`).
 - Comprehensive test suite for all major endpoints.
 
+[Unreleased]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/0.1.3...HEAD
 [0.1.3]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/tag/0.1.3
 [0.1.2]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/tag/0.1.2
 [0.1.1]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/tag/0.1.1

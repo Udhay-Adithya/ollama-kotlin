@@ -142,6 +142,7 @@ public data class DeleteRequest(
  * @property messages Default conversation messages.
  * @property adapters Adapter layers as JSON.
  * @property stream Whether to stream progress updates (`true`) or wait for completion.
+ *   Ignored by the one-shot client methods, which always send `false`.
  */
 @Serializable
 public data class CreateRequest(
@@ -164,6 +165,7 @@ public data class CreateRequest(
  * @property model Name of the model to pull (e.g. `"llama3"`, `"llama3:70b"`).
  * @property insecure Allow pulling from insecure (HTTP) registries.
  * @property stream Whether to stream progress updates.
+ *   Ignored by the one-shot client methods, which always send `false`.
  */
 @Serializable
 public data class PullRequest(
@@ -178,6 +180,7 @@ public data class PullRequest(
  * @property model Name of the model to push.
  * @property insecure Allow pushing to insecure (HTTP) registries.
  * @property stream Whether to stream progress updates.
+ *   Ignored by the one-shot client methods, which always send `false`.
  */
 @Serializable
 public data class PushRequest(

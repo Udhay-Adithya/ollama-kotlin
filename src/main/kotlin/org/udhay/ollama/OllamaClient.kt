@@ -109,7 +109,7 @@ public class OllamaClient(
 
     /** Generates a completion. Waits for the full response (non-streaming). */
     public suspend fun generate(request: GenerateRequest): GenerateResponse =
-        postJsonOrNdjsonLast("/api/generate", request)
+        postJsonOrNdjsonLast("/api/generate", request.copy(stream = false))
 
     /** Generates a completion, streaming each token as it arrives. */
     public fun generateStream(request: GenerateRequest): Flow<GenerateResponse> = flow {
@@ -121,7 +121,7 @@ public class OllamaClient(
 
     /** Sends a chat request. Waits for the full response (non-streaming). */
     public suspend fun chat(request: ChatRequest): ChatResponse =
-        postJsonOrNdjsonLast("/api/chat", request)
+        postJsonOrNdjsonLast("/api/chat", request.copy(stream = false))
 
     /** Sends a chat request, streaming each message chunk as it arrives. */
     public fun chatStream(request: ChatRequest): Flow<ChatResponse> = flow {
@@ -154,7 +154,7 @@ public class OllamaClient(
 
     /** Creates a new model (non-streaming, returns final progress). */
     public suspend fun create(request: CreateRequest): ProgressResponse =
-        postJsonOrNdjsonLast("/api/create", request)
+        postJsonOrNdjsonLast("/api/create", request.copy(stream = false))
 
     /** Creates a new model, streaming progress updates. */
     public fun createStream(request: CreateRequest): Flow<ProgressResponse> = flow {
@@ -166,7 +166,7 @@ public class OllamaClient(
 
     /** Pulls a model from the registry (non-streaming, returns final progress). */
     public suspend fun pull(request: PullRequest): ProgressResponse =
-        postJsonOrNdjsonLast("/api/pull", request)
+        postJsonOrNdjsonLast("/api/pull", request.copy(stream = false))
 
     /** Pulls a model, streaming progress updates. */
     public fun pullStream(request: PullRequest): Flow<ProgressResponse> = flow {
@@ -176,7 +176,7 @@ public class OllamaClient(
 
     /** Pushes a model to the registry (non-streaming). */
     public suspend fun push(request: PushRequest): ProgressResponse =
-        postJsonOrNdjsonLast("/api/push", request)
+        postJsonOrNdjsonLast("/api/push", request.copy(stream = false))
 
     /** Pushes a model, streaming progress updates. */
     public fun pushStream(request: PushRequest): Flow<ProgressResponse> = flow {
