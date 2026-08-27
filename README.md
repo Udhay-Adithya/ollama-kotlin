@@ -100,7 +100,29 @@ OllamaClient().use { client ->
 val client = OllamaClient {
     host = "http://192.168.1.100:11434"
     headers["X-Custom-Header"] = "value"
-    requestTimeoutMillis = 300_000 // 5 minutes
+}
+```
+
+### Timeouts
+
+| Option | Default | Meaning |
+|---|---|---|
+| `requestTimeoutMillis` | `null` | Ceiling on the whole exchange. `null` means none. |
+| `connectTimeoutMillis` | `30_000` | Time allowed to establish the connection. |
+| `socketTimeoutMillis` | `null` | Maximum inactivity between bytes. `null` means none. |
+
+`requestTimeoutMillis` bounds the response body read as well, so **any finite value also caps
+streaming** — a long `chatStream()` or a `pullStream()` of a large model would be cut off
+mid-flight once it elapsed. It defaults to `null` for that reason, matching `ollama-python`.
+
+To detect a stalled connection without capping total duration, use `socketTimeoutMillis`, which
+measures inactivity rather than elapsed time. Leave generous headroom: a cold model load can pause
+for minutes before the first token arrives.
+
+```kotlin
+val client = OllamaClient {
+    host = "http://192.168.1.100:11434"
+    socketTimeoutMillis = 600_000   // give up after 10 minutes of silence
 }
 ```
 
@@ -111,7 +133,6 @@ val client = OllamaClient(
     OllamaClientConfig(
         host = "http://192.168.1.100:11434",
         headers = mapOf("X-Custom-Header" to "value"),
-        requestTimeoutMillis = 300_000
     )
 )
 ```

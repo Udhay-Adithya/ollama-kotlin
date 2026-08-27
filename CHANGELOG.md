@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `OllamaClientConfig.webHost` (default `https://ollama.com`) for routing the hosted web API
   through a proxy or gateway.
 
+### Changed
+- `requestTimeoutMillis` now defaults to `null` (no ceiling) instead of 5 minutes. It bounds the
+  response body read too, so any finite value also truncated streaming — a long `chatStream()` or a
+  `pullStream()` of a large model died mid-flight once it elapsed. `ollama-python` likewise applies
+  no request timeout. `connectTimeoutMillis` now defaults to 30 seconds so an unreachable host
+  still fails fast, and `socketTimeoutMillis` is the recommended knob for catching a stalled
+  stream since it measures inactivity rather than total duration.
+
 ### Fixed
 - `ping()` caught every `Exception`, and `CancellationException` is one — so cancelling a scope
   during a ping reported the server as down instead of propagating, breaking structured

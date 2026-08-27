@@ -26,15 +26,30 @@ public data class OllamaClientConfig(
     val webHost: String = "https://ollama.com",
 
     /**
-     * Timeout for the entire request (including connection and data transfer) in milliseconds.
-     * Default is 5 minutes.
+     * Timeout for the entire request/response exchange in milliseconds, or `null` for no ceiling.
+     *
+     * Defaults to `null`. This bound covers the body read as well, so any finite value also caps
+     * streaming: a `pullStream()` of a large model or a long `chatStream()` would be cut off
+     * mid-flight once it elapsed. `ollama-python` likewise defaults to no request timeout.
+     *
+     * Set it only for calls you genuinely want bounded, and prefer [socketTimeoutMillis] to detect
+     * a stalled connection — that one measures inactivity rather than total duration.
      */
-    val requestTimeoutMillis: Long? = 300_000,
+    val requestTimeoutMillis: Long? = null,
 
-    /** Timeout for establishing a connection in milliseconds. */
-    val connectTimeoutMillis: Long? = null,
+    /**
+     * Timeout for establishing a connection in milliseconds. Defaults to 30 seconds so an
+     * unreachable host still fails fast even though [requestTimeoutMillis] is unbounded.
+     */
+    val connectTimeoutMillis: Long? = 30_000,
 
-    /** Timeout for socket read/write operations in milliseconds. */
+    /**
+     * Maximum inactivity between bytes in milliseconds, or `null` for none. Defaults to `null`.
+     *
+     * Unlike [requestTimeoutMillis] this does not cap total duration, so it is the right knob for
+     * catching a stalled stream. Leave generous headroom: a cold model load can pause for minutes
+     * before the first token arrives.
+     */
     val socketTimeoutMillis: Long? = null,
 ) {
     public class Builder {
@@ -47,13 +62,13 @@ public data class OllamaClientConfig(
         /** Base URL for the hosted web-search API. Defaults to `https://ollama.com`. */
         public var webHost: String = "https://ollama.com"
 
-        /** Timeout for the entire request in milliseconds. */
-        public var requestTimeoutMillis: Long? = 300_000
+        /** Timeout for the entire request in milliseconds, or `null` for no ceiling (default). */
+        public var requestTimeoutMillis: Long? = null
 
-        /** Timeout for establishing a connection in milliseconds. */
-        public var connectTimeoutMillis: Long? = null
+        /** Timeout for establishing a connection in milliseconds. Defaults to 30 seconds. */
+        public var connectTimeoutMillis: Long? = 30_000
 
-        /** Timeout for socket read/write operations in milliseconds. */
+        /** Maximum inactivity between bytes in milliseconds, or `null` for none (default). */
         public var socketTimeoutMillis: Long? = null
 
         public fun build(): OllamaClientConfig = OllamaClientConfig(
