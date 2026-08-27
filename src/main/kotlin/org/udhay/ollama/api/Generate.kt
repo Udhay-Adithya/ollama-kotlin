@@ -24,6 +24,9 @@ import kotlinx.serialization.json.JsonElement
  * @property topLogprobs Number of top alternative tokens to include when [logprobs] is `true`.
  * @property options Runtime options such as [Options.temperature] and [Options.topK].
  * @property keepAlive How long to keep the model loaded (e.g. `"5m"`, `300`).
+ * @property width Width in pixels of the generated image, for image-generation models.
+ * @property height Height in pixels of the generated image, for image-generation models.
+ * @property steps Number of diffusion steps, for image-generation models.
  */
 @Serializable
 public data class GenerateRequest(
@@ -45,6 +48,9 @@ public data class GenerateRequest(
     val options: Options? = null,
     @SerialName("keep_alive")
     val keepAlive: JsonElement? = null,
+    val width: Int? = null,
+    val height: Int? = null,
+    val steps: Int? = null,
 )
 
 /**
@@ -67,6 +73,9 @@ public data class GenerateRequest(
  * @property promptEvalDuration Time spent evaluating the prompt in nanoseconds.
  * @property evalCount Number of tokens generated.
  * @property evalDuration Time spent generating tokens in nanoseconds.
+ * @property image Base64-encoded generated image, for image-generation models.
+ * @property completed Diffusion steps completed so far, when streaming an image generation.
+ * @property total Total diffusion steps, when streaming an image generation.
  */
 @Serializable
 public data class GenerateResponse(
@@ -93,4 +102,7 @@ public data class GenerateResponse(
     val evalCount: Int? = null,
     @SerialName("eval_duration")
     val evalDuration: Long? = null,
+    val image: String? = null,
+    val completed: Int? = null,
+    val total: Int? = null,
 )
