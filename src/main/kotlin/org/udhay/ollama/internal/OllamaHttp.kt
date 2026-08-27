@@ -18,8 +18,11 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.client.statement.request
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
+import io.ktor.http.content.OutgoingContent
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
+import io.ktor.util.cio.readChannel
+import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readUTF8Line
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -33,7 +36,7 @@ import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonPrimitive
 import org.udhay.ollama.OllamaClientConfig
 import org.udhay.ollama.OllamaException
-import java.nio.file.Files
+import java.io.File
 import java.nio.file.Path
 
 internal fun HttpRequestBuilder.applyConfig(
@@ -186,23 +189,43 @@ internal inline fun <reified Req : Any, reified Res> HttpClient.postJsonLines(
     }
 }
 
+/**
+ * Uploads a file to `/api/blobs/{digest}`.
+ *
+ * Blobs are model weights and routinely run to several gigabytes, so the file is streamed from
+ * disk rather than read into a [ByteArray]. [LocalFileContent] sets `Content-Length` from the file
+ * size and feeds the request body in chunks, keeping memory flat regardless of file size.
+ */
 internal suspend fun HttpClient.uploadBlob(
     digest: String,
     path: Path,
     config: OllamaClientConfig,
 ): String {
-    val bytes = withContext(Dispatchers.IO) {
-        Files.readAllBytes(path)
+    val file = path.toFile()
+    if (!file.isFile) {
+        throw OllamaException("Blob file does not exist or is not a regular file: $path")
     }
 
     val response = request {
         method = HttpMethod.Post
         applyConfig(config, "/api/blobs/$digest")
-        contentType(ContentType.Application.OctetStream)
-        setBody(bytes)
+        setBody(FileUploadContent(file))
     }
 
     response.requireSuccess()
 
     return digest
+}
+
+/**
+ * Streams a file as a request body.
+ *
+ * [contentLength] is taken from the file so the request carries a real `Content-Length` rather than
+ * falling back to chunked encoding, and [readFrom] opens a fresh channel per attempt so a retry
+ * does not replay a drained one.
+ */
+private class FileUploadContent(private val file: File) : OutgoingContent.ReadChannelContent() {
+    override val contentType: ContentType = ContentType.Application.OctetStream
+    override val contentLength: Long = file.length()
+    override fun readFrom(): ByteReadChannel = file.readChannel()
 }

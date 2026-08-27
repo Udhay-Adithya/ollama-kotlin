@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   through a proxy or gateway.
 
 ### Fixed
+- `createBlob()` read the entire file into a `ByteArray` before sending. Blobs are model weights and
+  routinely run to several gigabytes, so this reliably exhausted the default heap. The file is now
+  streamed from disk with a real `Content-Length`, keeping memory flat regardless of size. A missing
+  file or a directory now fails with a clear `OllamaException` instead of a raw IO error.
 - `webSearch()` and `webFetch()` were sent to the configured local host, where they 404. They are
   hosted by Ollama's cloud and now go to `webHost`, independent of `host`. Both also fail fast with
   a clear `OllamaException` when no `Authorization: Bearer` token is configured, rather than
