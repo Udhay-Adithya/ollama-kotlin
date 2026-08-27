@@ -405,6 +405,36 @@ client.createStream(
 }
 ```
 
+#### Create from a local GGUF
+
+`/api/create` needs either `from` or `files`. To build from local weights, upload the file first
+and pass the digest `createBlob` returns:
+
+```kotlin
+import java.nio.file.Path
+
+val digest = client.createBlob(Path.of("/models/my-model.gguf"))
+
+client.create(
+    CreateRequest(
+        model = "my-model",
+        files = mapOf("my-model.gguf" to digest)
+    )
+)
+```
+
+Sharded models list every shard, and LoRA adapters use `adapters` in the same digest-map form:
+
+```kotlin
+client.create(
+    CreateRequest(
+        model = "tuned",
+        files = mapOf("base.gguf" to baseDigest),
+        adapters = mapOf("lora.gguf" to loraDigest)
+    )
+)
+```
+
 ### Pull / Push
 
 #### Pull a Model
