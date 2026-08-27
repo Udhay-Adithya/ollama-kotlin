@@ -14,7 +14,13 @@ import kotlin.test.assertEquals
 class OllamaClientWebTest {
 
     private fun client(engine: io.ktor.client.engine.mock.MockEngine) =
-        OllamaClient(OllamaClientConfig(host = "http://localhost:11434"), engine)
+        OllamaClient(
+            OllamaClientConfig(
+                host = "http://localhost:11434",
+                headers = mapOf("Authorization" to "Bearer test-key"),
+            ),
+            engine,
+        )
 
     @Test
     fun `webSearch sends query and max_results`() = runTest {

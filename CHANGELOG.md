@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `OllamaClientConfig.webHost` (default `https://ollama.com`) for routing the hosted web API
+  through a proxy or gateway.
+
 ### Fixed
+- `webSearch()` and `webFetch()` were sent to the configured local host, where they 404. They are
+  hosted by Ollama's cloud and now go to `webHost`, independent of `host`. Both also fail fast with
+  a clear `OllamaException` when no `Authorization: Bearer` token is configured, rather than
+  surfacing an opaque 401.
 - `Message` was missing `thinking`, so reasoning returned by `/api/chat` was silently discarded by
   `ignoreUnknownKeys`. `ChatResponse.thinking` is the `/api/generate` shape and is always `null` for
   chat. Read chat reasoning from `response.message?.thinking`.
