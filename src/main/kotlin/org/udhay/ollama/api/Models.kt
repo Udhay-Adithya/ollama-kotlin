@@ -42,12 +42,15 @@ public data class ModelTag(
  * @property system Override the system prompt stored in the Modelfile.
  * @property template Override the template stored in the Modelfile.
  * @property options Runtime options such as [Options.temperature].
+ * @property verbose Return full data for verbose fields. Without it, `model_info` entries such as
+ *   `tokenizer.ggml.tokens` and `tokenizer.ggml.merges` come back empty.
  */
 @Serializable
 public data class ShowRequest(
     val model: String,
     val system: String? = null,
     val template: String? = null,
+    val verbose: Boolean? = null,
     @Serializable(with = OptionsSerializer::class)
     val options: Options? = null,
 )
