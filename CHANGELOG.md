@@ -5,13 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-08-27
+
+First stable release. The public API is now pinned by `binary-compatibility-validator` and
+verified against a real Ollama server, not only against mocks.
 
 ### Added
 - `OllamaClientConfig.webHost` (default `https://ollama.com`) for routing the hosted web API
   through a proxy or gateway.
-
-### Added
 - Image-generation support on `/api/generate`: `width`, `height` and `steps` on `GenerateRequest`,
   and `image`, `completed` and `total` on `GenerateResponse`. Without the response fields a
   generated image was silently discarded by `ignoreUnknownKeys`.
@@ -132,7 +133,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DSL-based configuration and Environment variable support (`OLLAMA_HOST`, `OLLAMA_API_KEY`).
 - Comprehensive test suite for all major endpoints.
 
-[Unreleased]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/0.1.3...HEAD
+[Unreleased]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/0.1.3...1.0.0
 [0.1.3]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/tag/0.1.3
 [0.1.2]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/tag/0.1.2
 [0.1.1]: https://github.com/Udhay-Adithya/ollama-kotlin/compare/tag/0.1.1
