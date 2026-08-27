@@ -19,6 +19,15 @@ public data class OllamaClientConfig(
     val headers: Map<String, String> = emptyMap(),
 
     /**
+     * Whether to follow HTTP redirects. Defaults to `true`, matching `ollama-python`.
+     *
+     * Ktor decides this when the client is built rather than per request, so it is read from the
+     * config passed at construction. With the `configProvider` constructor, pass it there instead —
+     * a later value returned by the provider has no effect.
+     */
+    val followRedirects: Boolean = true,
+
+    /**
      * Base URL for the hosted web-search API used by [OllamaClient.webSearch] and
      * [OllamaClient.webFetch]. These are served by Ollama's cloud rather than a local server, so
      * they deliberately ignore [host]. Defaults to `https://ollama.com`.
@@ -59,6 +68,9 @@ public data class OllamaClientConfig(
         /** Mutable headers map for the DSL. */
         public val headers: MutableMap<String, String> = mutableMapOf()
 
+        /** Whether to follow HTTP redirects. Defaults to `true`. */
+        public var followRedirects: Boolean = true
+
         /** Base URL for the hosted web-search API. Defaults to `https://ollama.com`. */
         public var webHost: String = "https://ollama.com"
 
@@ -74,6 +86,7 @@ public data class OllamaClientConfig(
         public fun build(): OllamaClientConfig = OllamaClientConfig(
             host = host,
             headers = headers.toMap(),
+            followRedirects = followRedirects,
             webHost = webHost,
             requestTimeoutMillis = requestTimeoutMillis,
             connectTimeoutMillis = connectTimeoutMillis,
