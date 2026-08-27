@@ -1,7 +1,7 @@
 package org.udhay.ollama.integration
 
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonObject
@@ -33,6 +33,9 @@ import kotlin.test.assertTrue
  *
  * Enable with `OLLAMA_INTEGRATION_TESTS=true`. Override the models with `OLLAMA_TEST_MODEL` and
  * `OLLAMA_TEST_EMBED_MODEL`.
+ *
+ * These use `runBlocking`, not `runTest`. `runTest` caps the test body at 60 seconds of virtual
+ * time, which real generation against a real model routinely exceeds — the model load alone can.
  */
 @EnabledIfEnvironmentVariable(named = "OLLAMA_INTEGRATION_TESTS", matches = "true")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -49,7 +52,7 @@ class OllamaIntegrationTest {
     // ---- The regression that started all this ----
 
     @Test
-    fun `chat returns non-empty content`() = runTest {
+    fun `chat returns non-empty content`() = runBlocking {
         val response = IntegrationSupport.client().use {
             it.chat(
                 ChatRequest(
@@ -67,7 +70,7 @@ class OllamaIntegrationTest {
     }
 
     @Test
-    fun `generate returns non-empty response`() = runTest {
+    fun `generate returns non-empty response`() = runBlocking {
         val response = IntegrationSupport.client().use {
             it.generate(
                 GenerateRequest(
@@ -82,7 +85,7 @@ class OllamaIntegrationTest {
     }
 
     @Test
-    fun `the README quick start produces output`() = runTest {
+    fun `the README quick start produces output`() = runBlocking {
         // Verbatim from the README, so documentation drift shows up here.
         IntegrationSupport.client().use { client ->
             val response = client.chat(
@@ -98,7 +101,7 @@ class OllamaIntegrationTest {
     // ---- Streaming ----
 
     @Test
-    fun `chatStream accumulates to a comparable answer`() = runTest {
+    fun `chatStream accumulates to a comparable answer`() = runBlocking {
         val chunks = IntegrationSupport.client().use {
             it.chatStream(
                 ChatRequest(
@@ -115,7 +118,7 @@ class OllamaIntegrationTest {
     }
 
     @Test
-    fun `generateStream emits incremental tokens`() = runTest {
+    fun `generateStream emits incremental tokens`() = runBlocking {
         val chunks = IntegrationSupport.client().use {
             it.generateStream(GenerateRequest(model = model, prompt = "Say hello")).toList()
         }
@@ -126,7 +129,7 @@ class OllamaIntegrationTest {
     // ---- Structured output, tools, thinking ----
 
     @Test
-    fun `structured output parses as the requested schema`() = runTest {
+    fun `structured output parses as the requested schema`() = runBlocking {
         val response = IntegrationSupport.client().use {
             it.chat(
                 ChatRequest(
@@ -159,7 +162,7 @@ class OllamaIntegrationTest {
     }
 
     @Test
-    fun `tool calling round-trips through the builder`() = runTest {
+    fun `tool calling round-trips through the builder`() = runBlocking {
         IntegrationSupport.assumeCapability(model, "tools")
 
         val addTool = tool("add", "Adds two numbers together") {
@@ -184,7 +187,7 @@ class OllamaIntegrationTest {
     }
 
     @Test
-    fun `thinking is returned on the message`() = runTest {
+    fun `thinking is returned on the message`() = runBlocking {
         IntegrationSupport.assumeCapability(model, "thinking")
 
         val response = IntegrationSupport.client().use {
@@ -205,7 +208,7 @@ class OllamaIntegrationTest {
     // ---- Embeddings ----
 
     @Test
-    fun `embed returns vectors of a consistent dimension`() = runTest {
+    fun `embed returns vectors of a consistent dimension`() = runBlocking {
         val response = IntegrationSupport.client().use {
             it.embed(
                 EmbedRequest(
@@ -226,7 +229,7 @@ class OllamaIntegrationTest {
     // ---- Model and server endpoints ----
 
     @Test
-    fun `list show ps and version all succeed`() = runTest {
+    fun `list show ps and version all succeed`() = runBlocking {
         IntegrationSupport.client().use { client ->
             val models = client.list()
             assertTrue(models.models.isNotEmpty(), "the test model should be present after setup")
@@ -241,12 +244,12 @@ class OllamaIntegrationTest {
     }
 
     @Test
-    fun `ping reports the server as reachable`() = runTest {
+    fun `ping reports the server as reachable`() = runBlocking {
         assertTrue(IntegrationSupport.client().use { it.ping() })
     }
 
     @Test
-    fun `options actually reach the model`() = runTest {
+    fun `options actually reach the model`() = runBlocking {
         // A seeded, zero-temperature request must be reproducible.
         fun request() = GenerateRequest(
             model = model,
