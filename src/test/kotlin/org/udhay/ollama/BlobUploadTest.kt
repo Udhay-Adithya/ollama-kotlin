@@ -2,6 +2,7 @@ package org.udhay.ollama
 
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
+import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.OutgoingContent
 import io.ktor.utils.io.readRemaining
@@ -68,18 +69,23 @@ class BlobUploadTest {
     }
 
     @Test
-    fun `the digest is computed and returned when not supplied`() = runTest {
+    fun `the digest is computed and the blob uploaded when the server lacks it`() = runTest {
         // sha256("abc")
         val file = (tempDir / "abc.bin").also { it.writeBytes("abc".toByteArray()) }
-        var path = ""
+        val methods = mutableListOf<String>()
         val engine = MockEngine { req ->
-            path = req.url.encodedPath
-            respond("", HttpStatusCode.Created)
+            methods += req.method.value
+            // 404 on HEAD means the server does not have it yet, so the upload must happen.
+            if (req.method == HttpMethod.Head) {
+                respond("", HttpStatusCode.NotFound)
+            } else {
+                respond("", HttpStatusCode.Created)
+            }
         }
 
         val digest = client(engine).use { it.createBlob(file) }
         assertEquals("sha256:ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad", digest)
-        assertEquals("/api/blobs/$digest", path)
+        assertEquals(listOf("HEAD", "POST"), methods, "an absent blob must still be uploaded")
     }
 
     @Test

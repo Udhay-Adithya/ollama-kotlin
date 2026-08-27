@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   through a proxy or gateway.
 
 ### Added
+- `blobExists(digest)` wrapping `HEAD /api/blobs/:digest`. `createBlob(path)` now consults it first
+  and skips the upload when the server already holds the blob, so re-running a create flow does not
+  re-send gigabytes. Pass `skipIfPresent = false` to always upload.
+- `embeddings(EmbeddingsRequest)` for the superseded `/api/embeddings` endpoint, for servers
+  predating `/api/embed`. Deprecated in favour of `embed`, and note the shape difference — a single
+  `embedding` vector rather than a list of `embeddings`.
 - A `tool(name, description) { ... }` builder that generates a tool's JSON Schema from typed
   parameter declarations — `string`, `number`, `integer`, `boolean`, `array`, nested `obj`, and
   `raw` for schema fragments the helpers do not cover. Parameters are required unless opted out,

@@ -6,6 +6,7 @@ import io.ktor.client.plugins.timeout
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import io.ktor.client.request.head
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.preparePost
@@ -18,6 +19,7 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.client.statement.request
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.OutgoingContent
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
@@ -196,6 +198,23 @@ internal inline fun <reified Req : Any, reified Res> HttpClient.postJsonLines(
  * disk rather than read into a [ByteArray]. [LocalFileContent] sets `Content-Length` from the file
  * size and feeds the request body in chunks, keeping memory flat regardless of file size.
  */
+/**
+ * Issues `HEAD /api/blobs/{digest}` to check whether the server already holds a blob.
+ *
+ * 404 means absent; any other non-success status is a real error and is thrown.
+ */
+internal suspend fun HttpClient.blobExists(
+    digest: String,
+    config: OllamaClientConfig,
+): Boolean {
+    val response = head {
+        applyConfig(config, "/api/blobs/$digest")
+    }
+    if (response.status == HttpStatusCode.NotFound) return false
+    response.requireSuccess()
+    return true
+}
+
 internal suspend fun HttpClient.uploadBlob(
     digest: String,
     path: Path,

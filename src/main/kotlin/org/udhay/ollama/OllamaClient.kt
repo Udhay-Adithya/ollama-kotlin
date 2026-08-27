@@ -28,6 +28,8 @@ import org.udhay.ollama.api.CreateRequest
 import org.udhay.ollama.api.DeleteRequest
 import org.udhay.ollama.api.EmbedRequest
 import org.udhay.ollama.api.EmbedResponse
+import org.udhay.ollama.api.EmbeddingsRequest
+import org.udhay.ollama.api.EmbeddingsResponse
 import org.udhay.ollama.api.GenerateRequest
 import org.udhay.ollama.api.GenerateResponse
 import org.udhay.ollama.api.ListResponse
@@ -47,6 +49,7 @@ import org.udhay.ollama.internal.DefaultJson
 import org.udhay.ollama.internal.OllamaEnv
 import org.udhay.ollama.internal.applyConfig
 import org.udhay.ollama.internal.bodyFromNdjsonLast
+import org.udhay.ollama.internal.blobExists
 import org.udhay.ollama.internal.bodyOrThrow
 import org.udhay.ollama.internal.deleteJson
 import org.udhay.ollama.internal.getJson
@@ -152,6 +155,18 @@ public class OllamaClient(
     public suspend fun embed(request: EmbedRequest): EmbedResponse =
         httpClient.postJson("/api/embed", request, resolveConfig())
 
+    /**
+     * Generates an embedding via the superseded `/api/embeddings` endpoint.
+     *
+     * Returns a single `embedding` vector rather than the list of `embeddings` [embed] returns.
+     */
+    @Deprecated(
+        "Superseded by /api/embed, which accepts batched input.",
+        ReplaceWith("embed(EmbedRequest(model = request.model, input = JsonPrimitive(request.prompt)))"),
+    )
+    public suspend fun embeddings(request: EmbeddingsRequest): EmbeddingsResponse =
+        httpClient.postJson("/api/embeddings", request, resolveConfig())
+
     // ---- Model management ----
 
     /** Lists all models available on the server. */
@@ -207,11 +222,21 @@ public class OllamaClient(
     public suspend fun createBlob(digest: String, path: Path): String =
         httpClient.uploadBlob(digest, path, resolveConfig())
 
-    /** Computes the SHA-256 digest and uploads the file. Returns the digest. */
-    public suspend fun createBlob(path: Path): String {
+    /**
+     * Computes the SHA-256 digest and uploads the file, returning the digest.
+     *
+     * The server is asked whether it already holds the blob first, so re-running a create flow does
+     * not re-upload gigabytes the server already has. Pass `skipIfPresent = false` to always upload.
+     */
+    public suspend fun createBlob(path: Path, skipIfPresent: Boolean = true): String {
         val digest = sha256DigestOf(path)
+        if (skipIfPresent && blobExists(digest)) return digest
         return createBlob(digest, path)
     }
+
+    /** Returns `true` if the server already holds a blob with this digest. */
+    public suspend fun blobExists(digest: String): Boolean =
+        httpClient.blobExists(digest, resolveConfig())
 
     // ---- System ----
 

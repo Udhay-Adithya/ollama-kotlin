@@ -109,7 +109,12 @@ class CreateFromFilesTest {
         var sentDigest: String? = null
         val engine = MockEngine { req ->
             if (req.url.encodedPath.startsWith("/api/blobs/")) {
-                respond("", HttpStatusCode.Created)
+                // HEAD probes existence; 404 forces the upload to actually run.
+                if (req.method == io.ktor.http.HttpMethod.Head) {
+                    respond("", HttpStatusCode.NotFound)
+                } else {
+                    respond("", HttpStatusCode.Created)
+                }
             } else {
                 val body = DefaultJson.parseToJsonElement(
                     (req.body as io.ktor.http.content.TextContent).text,
