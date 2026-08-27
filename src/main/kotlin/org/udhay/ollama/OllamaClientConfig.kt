@@ -19,6 +19,13 @@ public data class OllamaClientConfig(
     val headers: Map<String, String> = emptyMap(),
 
     /**
+     * Base URL for the hosted web-search API used by [OllamaClient.webSearch] and
+     * [OllamaClient.webFetch]. These are served by Ollama's cloud rather than a local server, so
+     * they deliberately ignore [host]. Defaults to `https://ollama.com`.
+     */
+    val webHost: String = "https://ollama.com",
+
+    /**
      * Timeout for the entire request (including connection and data transfer) in milliseconds.
      * Default is 5 minutes.
      */
@@ -37,6 +44,9 @@ public data class OllamaClientConfig(
         /** Mutable headers map for the DSL. */
         public val headers: MutableMap<String, String> = mutableMapOf()
 
+        /** Base URL for the hosted web-search API. Defaults to `https://ollama.com`. */
+        public var webHost: String = "https://ollama.com"
+
         /** Timeout for the entire request in milliseconds. */
         public var requestTimeoutMillis: Long? = 300_000
 
@@ -49,6 +59,7 @@ public data class OllamaClientConfig(
         public fun build(): OllamaClientConfig = OllamaClientConfig(
             host = host,
             headers = headers.toMap(),
+            webHost = webHost,
             requestTimeoutMillis = requestTimeoutMillis,
             connectTimeoutMillis = connectTimeoutMillis,
             socketTimeoutMillis = socketTimeoutMillis,

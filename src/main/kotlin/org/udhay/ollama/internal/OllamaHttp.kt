@@ -36,8 +36,11 @@ import org.udhay.ollama.OllamaException
 import java.nio.file.Files
 import java.nio.file.Path
 
-internal fun HttpRequestBuilder.applyConfig(config: OllamaClientConfig, path: String) {
-    val host = parseHost(config.host ?: OllamaEnv.host())
+internal fun HttpRequestBuilder.applyConfig(
+    config: OllamaClientConfig,
+    path: String,
+    host: String = parseHost(config.host ?: OllamaEnv.host()),
+) {
     url(host + "/" + path.removePrefix("/"))
     config.headers.forEach { (k, v) -> header(k, v) }
     timeout {
@@ -61,9 +64,10 @@ internal suspend inline fun <reified Req : Any, reified Res> HttpClient.postJson
     path: String,
     body: Req,
     config: OllamaClientConfig,
+    host: String = parseHost(config.host ?: OllamaEnv.host()),
 ): Res {
     val response = post {
-        applyConfig(config, path)
+        applyConfig(config, path, host)
         contentType(ContentType.Application.Json)
         setBody(body)
     }

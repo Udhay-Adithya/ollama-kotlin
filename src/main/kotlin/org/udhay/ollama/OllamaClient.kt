@@ -48,6 +48,7 @@ import org.udhay.ollama.internal.bodyOrThrow
 import org.udhay.ollama.internal.deleteJson
 import org.udhay.ollama.internal.getJson
 import org.udhay.ollama.internal.isNdjson
+import org.udhay.ollama.internal.parseHost
 import org.udhay.ollama.internal.postJson
 import org.udhay.ollama.internal.postJsonLines
 import org.udhay.ollama.internal.requireSuccess
@@ -218,15 +219,52 @@ public class OllamaClient(
     /** Returns the Ollama server version. */
     public suspend fun version(): VersionResponse = httpClient.getJson("/api/version", resolveConfig())
 
-    // ---- Web (requires Bearer token against ollama.com) ----
+    // ---- Web (hosted by ollama.com, requires a Bearer token) ----
 
-    /** Performs a web search via the Ollama web-search API. */
-    public suspend fun webSearch(request: WebSearchRequest): WebSearchResponse =
-        httpClient.postJson("/api/web_search", request, resolveConfig())
+    /**
+     * Performs a web search via the hosted Ollama web-search API.
+     *
+     * This endpoint lives on `https://ollama.com`, not on a local Ollama server, so it ignores
+     * [OllamaClientConfig.host] and uses [OllamaClientConfig.webHost] instead.
+     *
+     * @throws OllamaException if no `Authorization: Bearer` header is configured — set
+     *   `OLLAMA_API_KEY` or supply the header explicitly.
+     */
+    public suspend fun webSearch(request: WebSearchRequest): WebSearchResponse {
+        val config = requireWebAuth("webSearch")
+        return httpClient.postJson("/api/web_search", request, config, parseHost(config.webHost))
+    }
 
-    /** Fetches a single page via the Ollama web-fetch API. */
-    public suspend fun webFetch(request: WebFetchRequest): WebFetchResponse =
-        httpClient.postJson("/api/web_fetch", request, resolveConfig())
+    /**
+     * Fetches a single page via the hosted Ollama web-fetch API.
+     *
+     * Like [webSearch], this is served by [OllamaClientConfig.webHost] rather than
+     * [OllamaClientConfig.host].
+     *
+     * @throws OllamaException if no `Authorization: Bearer` header is configured.
+     */
+    public suspend fun webFetch(request: WebFetchRequest): WebFetchResponse {
+        val config = requireWebAuth("webFetch")
+        return httpClient.postJson("/api/web_fetch", request, config, parseHost(config.webHost))
+    }
+
+    /**
+     * Resolves the config and fails fast when the hosted web API would reject the call for lack of
+     * a bearer token, rather than surfacing an opaque 401.
+     */
+    private suspend fun requireWebAuth(method: String): OllamaClientConfig {
+        val config = resolveConfig()
+        val authorization = config.headers.entries
+            .firstOrNull { it.key.equals("authorization", ignoreCase = true) }
+            ?.value
+        if (authorization?.startsWith("Bearer ", ignoreCase = true) != true) {
+            throw OllamaException(
+                "$method requires an Authorization: Bearer token. Set the OLLAMA_API_KEY " +
+                    "environment variable or pass the header via OllamaClientConfig.headers.",
+            )
+        }
+        return config
+    }
 
     // ---- Internals ----
 
