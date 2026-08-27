@@ -264,6 +264,40 @@ val response = client.embed(
 )
 ```
 
+### Images (Multimodal)
+
+`images` is a list of bare base64 strings on the wire. The helpers in `org.udhay.ollama.util`
+encode from whatever you have:
+
+```kotlin
+import org.udhay.ollama.util.imageFromPath
+import java.nio.file.Path
+
+val response = client.chat(
+    ChatRequest(
+        model = "llava",
+        messages = listOf(
+            Message(
+                role = MessageRole.User,
+                content = "What is in this image?",
+                images = listOf(imageFromPath(Path.of("photo.png")))
+            )
+        )
+    )
+)
+```
+
+| Helper | Input |
+|---|---|
+| `imageFromPath(path)` | A file on disk. Throws if it is missing. |
+| `imageFromBytes(bytes)` | Already-loaded `ByteArray`. |
+| `imageFromStream(input)` | An `InputStream`, read fully but not closed. |
+| `imageFromBase64(value)` | Base64, stripping a `data:image/png;base64,` prefix if present. |
+| `image(value)` | Either a path or base64 — coerces, for user-supplied values. |
+
+Passing a `data:` URI through unchanged yields an image the model cannot decode, so route
+browser-sourced strings through `imageFromBase64`.
+
 ### Tool Calling
 
 Define tools and let the model invoke them:
