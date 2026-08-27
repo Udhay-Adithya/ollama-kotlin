@@ -160,6 +160,27 @@ val client = OllamaClient(
 | `OLLAMA_HOST` | Base URL of the Ollama server (default: `http://127.0.0.1:11434`) |
 | `OLLAMA_API_KEY` | API key — automatically sent as a `Bearer` token in the `Authorization` header |
 
+### Request Headers
+
+Every request carries a `User-Agent` of the form `ollama-kotlin/<version> (<os> <arch>) Kotlin/<version>`.
+Override it, like any header, via `headers`:
+
+```kotlin
+val client = OllamaClient {
+    headers["User-Agent"] = "my-app/2.0"
+}
+```
+
+### Redirects
+
+`followRedirects` defaults to `true`. Ktor fixes this when the client is built rather than per
+request, so it is read from the config you pass at construction — with the `configProvider`
+constructor, pass it as the third argument instead:
+
+```kotlin
+val client = OllamaClient { followRedirects = false }
+```
+
 Environment variables are used as fallbacks when no explicit configuration is provided.
 
 ---
