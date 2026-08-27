@@ -11,7 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `OllamaClientConfig.webHost` (default `https://ollama.com`) for routing the hosted web API
   through a proxy or gateway.
 
+### Added
+- `CreateRequest.files` — a file-name to blob-digest map, so a model can be built from local GGUF
+  weights. Previously `/api/create` could only derive from an existing model, and a request with
+  neither is rejected by the server with `neither 'from' or 'files' was specified`.
+
 ### Changed
+- `CreateRequest.adapters` is now `Map<String, String>?` instead of `JsonElement?`, matching the
+  digest-map shape `files` uses. This is a source-breaking change for anyone who was passing a raw
+  `JsonElement`.
 - `requestTimeoutMillis` now defaults to `null` (no ceiling) instead of 5 minutes. It bounds the
   response body read too, so any finite value also truncated streaming — a long `chatStream()` or a
   `pullStream()` of a large model died mid-flight once it elapsed. `ollama-python` likewise applies
