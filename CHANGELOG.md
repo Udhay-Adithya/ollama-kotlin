@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- Hosts without a scheme produced invalid request URLs. `OLLAMA_HOST=127.0.0.1:11434` — the form
+  Ollama documents — became `localhost://localhost/11434/api/chat` or threw. Hosts are now
+  normalized: a missing scheme defaults to `http`, a missing port to `11434`, a bare `:port` binds
+  to `127.0.0.1`, IPv6 literals keep their brackets, and path prefixes are preserved. Unlike
+  `ollama-python`, an explicit scheme without a port keeps that port implicit rather than gaining
+  `:80`/`:443`, which some gateways reject.
 - `chat()` and `generate()` returned empty content. `/api/chat` and `/api/generate` stream by
   default, so omitting `stream` made the server reply with NDJSON and the client returned only the
   final chunk — which carries empty content. The one-shot methods now send `"stream": false`
