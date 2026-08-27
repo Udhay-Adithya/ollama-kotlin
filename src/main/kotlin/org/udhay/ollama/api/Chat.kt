@@ -17,7 +17,7 @@ import kotlinx.serialization.json.JsonElement
  * @property think Enable extended thinking. Pass `true`, or a level (`"low"`, `"medium"`, `"high"`, `"max"`).
  * @property logprobs Whether to return log probabilities for each generated token.
  * @property topLogprobs Number of top alternative tokens to include when [logprobs] is `true`.
- * @property options Runtime options (temperature, top_k, etc.) as a JSON object.
+ * @property options Runtime options such as [Options.temperature] and [Options.topK].
  * @property keepAlive How long to keep the model loaded (e.g. `"5m"`, `300`).
  */
 @Serializable
@@ -31,7 +31,8 @@ public data class ChatRequest(
     val logprobs: Boolean? = null,
     @SerialName("top_logprobs")
     val topLogprobs: Int? = null,
-    val options: JsonElement? = null,
+    @Serializable(with = OptionsSerializer::class)
+    val options: Options? = null,
     @SerialName("keep_alive")
     val keepAlive: JsonElement? = null,
 )

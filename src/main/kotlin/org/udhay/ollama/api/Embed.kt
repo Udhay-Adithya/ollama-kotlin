@@ -10,7 +10,7 @@ import kotlinx.serialization.json.JsonElement
  * @property model Name of the embedding model (e.g. `"nomic-embed-text"`).
  * @property input Text to embed. Can be a [JsonPrimitive] string or a [JsonArray] of strings.
  * @property truncate Whether to truncate input that exceeds the model's context length.
- * @property options Runtime options as a JSON object.
+ * @property options Runtime options such as [Options.numCtx].
  * @property keepAlive How long to keep the model loaded (e.g. `"5m"`, `300`).
  * @property dimensions Desired dimensionality of the output embeddings (if supported by the model).
  */
@@ -19,7 +19,8 @@ public data class EmbedRequest(
     val model: String,
     val input: JsonElement,
     val truncate: Boolean? = null,
-    val options: JsonElement? = null,
+    @Serializable(with = OptionsSerializer::class)
+    val options: Options? = null,
     @SerialName("keep_alive")
     val keepAlive: JsonElement? = null,
     val dimensions: Int? = null,

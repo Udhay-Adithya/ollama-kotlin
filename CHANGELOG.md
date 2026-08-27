@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   through a proxy or gateway.
 
 ### Added
+- `Options` now carries the full documented option set as typed fields — `temperature`, `topK`,
+  `numCtx`, `seed`, `numPredict`, `repeatPenalty`, `mirostat`, `stop` and the rest — serialized to
+  their snake_case wire names. `Options.extra` passes through options newer than this library,
+  flattened into the same JSON object rather than nested.
 - Image helpers in `org.udhay.ollama.util`: `imageFromPath`, `imageFromBytes`, `imageFromStream`,
   `imageFromBase64` and `image`. Callers previously had to base64-encode by hand, and a `data:` URI
   passed through verbatim produces an image the model cannot decode. `imageFromBase64` strips the
@@ -21,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   neither is rejected by the server with `neither 'from' or 'files' was specified`.
 
 ### Changed
+- `options` on `ChatRequest`, `GenerateRequest`, `EmbedRequest` and `ShowRequest` is now `Options?`
+  instead of `JsonElement?`. `Options` was previously a value class that no request type accepted —
+  unreachable public API. **Source-breaking** for callers passing `buildJsonObject { ... }`; the
+  same values are now named fields, and anything unnamed goes in `Options.extra`.
 - `CreateRequest.adapters` is now `Map<String, String>?` instead of `JsonElement?`, matching the
   digest-map shape `files` uses. This is a source-breaking change for anyone who was passing a raw
   `JsonElement`.

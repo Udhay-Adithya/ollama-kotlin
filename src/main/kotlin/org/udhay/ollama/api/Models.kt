@@ -41,14 +41,15 @@ public data class ModelTag(
  * @property model Name of the model to inspect.
  * @property system Override the system prompt stored in the Modelfile.
  * @property template Override the template stored in the Modelfile.
- * @property options Runtime options (temperature, top_k, etc.) as a JSON object.
+ * @property options Runtime options such as [Options.temperature].
  */
 @Serializable
 public data class ShowRequest(
     val model: String,
     val system: String? = null,
     val template: String? = null,
-    val options: JsonElement? = null,
+    @Serializable(with = OptionsSerializer::class)
+    val options: Options? = null,
 )
 
 /**
