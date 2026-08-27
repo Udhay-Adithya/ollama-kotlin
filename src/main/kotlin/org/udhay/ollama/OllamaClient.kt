@@ -3,7 +3,9 @@ package org.udhay.ollama
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.HttpSend
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.plugin
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -15,6 +17,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -48,6 +51,7 @@ import org.udhay.ollama.internal.bodyOrThrow
 import org.udhay.ollama.internal.deleteJson
 import org.udhay.ollama.internal.getJson
 import org.udhay.ollama.internal.isNdjson
+import org.udhay.ollama.internal.mapConnectionError
 import org.udhay.ollama.internal.parseHost
 import org.udhay.ollama.internal.postJson
 import org.udhay.ollama.internal.postJsonLines
@@ -104,6 +108,18 @@ public class OllamaClient(
     internal val httpClient: HttpClient = HttpClient(engine ?: CIO.create()) {
         install(ContentNegotiation) { json(DefaultJson) }
         install(HttpTimeout)
+    }.apply {
+        // One interception point covers every endpoint, streaming included, so a refused
+        // connection reports what to do instead of surfacing a bare ConnectException.
+        plugin(HttpSend).intercept { request ->
+            try {
+                execute(request)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Throwable) {
+                throw mapConnectionError(e, request.url.buildString())
+            }
+        }
     }
 
     // ---- Generate ----
@@ -201,7 +217,9 @@ public class OllamaClient(
 
     /**
      * Checks if the Ollama server is running and reachable.
-     * Returns true if the server responds with "Ollama is running".
+     * Returns true if the server responds with "Ollama is running", false for any failure.
+     *
+     * Cancellation propagates rather than being reported as `false`.
      */
     public suspend fun ping(): Boolean = try {
         val config = resolveConfig()
@@ -209,6 +227,10 @@ public class OllamaClient(
             applyConfig(config, "/")
         }
         response.status.isSuccess() && response.bodyAsText().trim() == "Ollama is running"
+    } catch (e: CancellationException) {
+        // CancellationException is an Exception in Kotlin; swallowing it would report "server
+        // down" for a cancelled caller and break structured concurrency.
+        throw e
     } catch (e: Exception) {
         false
     }

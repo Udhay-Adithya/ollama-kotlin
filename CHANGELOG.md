@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   through a proxy or gateway.
 
 ### Fixed
+- `ping()` caught every `Exception`, and `CancellationException` is one — so cancelling a scope
+  during a ping reported the server as down instead of propagating, breaking structured
+  concurrency. Cancellation now propagates; genuine failures still return `false`.
+- Connection failures surfaced as bare `ConnectException` or, worse, `UnresolvedAddressException`
+  with no message at all. Every endpoint — streaming included — now reports an `OllamaException`
+  naming the URL and what to check.
 - `createBlob()` read the entire file into a `ByteArray` before sending. Blobs are model weights and
   routinely run to several gigabytes, so this reliably exhausted the default heap. The file is now
   streamed from disk with a real `Content-Length`, keeping memory flat regardless of size. A missing
