@@ -37,8 +37,8 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 internal fun HttpRequestBuilder.applyConfig(config: OllamaClientConfig, path: String) {
-    val host = config.host ?: OllamaEnv.host() ?: "http://127.0.0.1:11434"
-    url(host.removeSuffix("/") + "/" + path.removePrefix("/"))
+    val host = parseHost(config.host ?: OllamaEnv.host())
+    url(host + "/" + path.removePrefix("/"))
     config.headers.forEach { (k, v) -> header(k, v) }
     timeout {
         requestTimeoutMillis = config.requestTimeoutMillis
