@@ -18,6 +18,7 @@ import io.ktor.client.statement.bodyAsChannel
 import io.ktor.client.statement.bodyAsText
 import io.ktor.client.statement.request
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.OutgoingContent
@@ -47,6 +48,9 @@ internal fun HttpRequestBuilder.applyConfig(
     host: String = parseHost(config.host ?: OllamaEnv.host()),
 ) {
     url(host + "/" + path.removePrefix("/"))
+    if (config.headers.keys.none { it.equals(HttpHeaders.UserAgent, ignoreCase = true) }) {
+        header(HttpHeaders.UserAgent, OllamaUserAgent)
+    }
     config.headers.forEach { (k, v) -> header(k, v) }
     timeout {
         requestTimeoutMillis = config.requestTimeoutMillis
@@ -247,4 +251,20 @@ private class FileUploadContent(private val file: File) : OutgoingContent.ReadCh
     override val contentType: ContentType = ContentType.Application.OctetStream
     override val contentLength: Long = file.length()
     override fun readFrom(): ByteReadChannel = file.readChannel()
+}
+
+/**
+ * Identifies this library to the server, in the same shape `ollama-python` uses.
+ *
+ * Requests were previously anonymous, which makes attribution and debugging harder for anyone
+ * running a shared Ollama instance behind a proxy. Overridable via `OllamaClientConfig.headers`.
+ */
+internal val OllamaUserAgent: String = buildString {
+    append("ollama-kotlin/").append(BuildInfo.VERSION)
+    append(" (")
+    append(System.getProperty("os.name")?.lowercase()?.replace(' ', '-') ?: "unknown")
+    append(' ')
+    append(System.getProperty("os.arch") ?: "unknown")
+    append(") Kotlin/")
+    append(KotlinVersion.CURRENT)
 }

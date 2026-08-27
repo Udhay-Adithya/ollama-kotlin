@@ -79,16 +79,23 @@ import java.nio.file.Path
  * ```kotlin
  * val client = OllamaClient { host = "http://192.168.1.100:11434" }
  * ```
+ *
+ * @param configProvider Resolves the configuration for every request.
+ * @param engine HTTP engine to use; defaults to CIO.
+ * @param followRedirects Whether to follow HTTP redirects. Ktor fixes this when the client is
+ *   built, so unlike the rest of the configuration it cannot vary per request. The
+ *   [OllamaClientConfig] constructors read it from the config they are given.
  */
 public class OllamaClient(
     private val configProvider: suspend () -> OllamaClientConfig,
     engine: HttpClientEngine? = null,
+    followRedirects: Boolean = true,
 ) : Closeable {
 
     public constructor(
         config: OllamaClientConfig = OllamaClientConfig(),
         engine: HttpClientEngine? = null,
-    ) : this({ config }, engine)
+    ) : this({ config }, engine, config.followRedirects)
 
     /**
      * DSL constructor: `OllamaClient { host = "..." }`.
@@ -111,6 +118,8 @@ public class OllamaClient(
     internal val httpClient: HttpClient = HttpClient(engine ?: CIO.create()) {
         install(ContentNegotiation) { json(DefaultJson) }
         install(HttpTimeout)
+        // Ktor resolves this when the client is built, so it cannot vary per request.
+        this.followRedirects = followRedirects
     }.apply {
         // One interception point covers every endpoint, streaming included, so a refused
         // connection reports what to do instead of surfacing a bare ConnectException.
