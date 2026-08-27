@@ -448,7 +448,10 @@ if (client.ping()) {
 
 ### Web Search / Fetch
 
-> Requires an `OLLAMA_API_KEY` or `Authorization` header for `ollama.com`.
+These two endpoints are served by Ollama's cloud, not by your local server, so they ignore
+`host` and use `webHost` (default `https://ollama.com`). They require an `OLLAMA_API_KEY`, or an
+explicit `Authorization: Bearer` header — without one the call throws `OllamaException` rather than
+returning a 401.
 
 ```kotlin
 val results = client.webSearch(
@@ -462,6 +465,15 @@ val page = client.webFetch(
     WebFetchRequest(url = "https://kotlinlang.org")
 )
 println(page.content)
+```
+
+To route these through a proxy or an enterprise gateway, override `webHost`:
+
+```kotlin
+val client = OllamaClient {
+    host = "http://192.168.1.100:11434"   // local inference
+    webHost = "https://proxy.internal"    // hosted web API
+}
 ```
 
 ---
