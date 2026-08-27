@@ -11,7 +11,7 @@ repositories {
 }
 
 // Single source of truth for the published version; also baked into the User-Agent header.
-val libraryVersion = "0.1.3"
+val libraryVersion = "1.0.0"
 
 version = libraryVersion
 
