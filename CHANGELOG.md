@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   through a proxy or gateway.
 
 ### Added
+- Image helpers in `org.udhay.ollama.util`: `imageFromPath`, `imageFromBytes`, `imageFromStream`,
+  `imageFromBase64` and `image`. Callers previously had to base64-encode by hand, and a `data:` URI
+  passed through verbatim produces an image the model cannot decode. `imageFromBase64` strips the
+  prefix; a missing file is reported rather than silently sent as garbage.
 - `CreateRequest.files` — a file-name to blob-digest map, so a model can be built from local GGUF
   weights. Previously `/api/create` could only derive from an existing model, and a request with
   neither is rejected by the server with `neither 'from' or 'files' was specified`.
