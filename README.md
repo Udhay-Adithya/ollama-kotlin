@@ -686,6 +686,19 @@ options = Options(
 
 ---
 
+## Public API Compatibility
+
+The public ABI is tracked in `api/ollama-kotlin.api` by the Kotlin
+[binary-compatibility-validator](https://github.com/Kotlin/binary-compatibility-validator). `apiCheck`
+runs as part of `./gradlew build`, so an unintended change to the public surface fails CI rather
+than surfacing after release.
+
+When you change public API deliberately, regenerate the dump and commit it alongside the change:
+
+```bash
+./gradlew apiDump
+```
+
 ## Generating API Documentation
 
 This project uses [Dokka](https://github.com/Kotlin/dokka) for generating KDoc-based API documentation as HTML.

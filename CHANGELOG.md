@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   through a proxy or gateway.
 
 ### Added
+- Binary compatibility validation via the Kotlin `binary-compatibility-validator` plugin, with the
+  public ABI committed at `api/ollama-kotlin.api`. `apiCheck` runs as part of `build`, so CI fails
+  a PR that changes the public surface without an accompanying `./gradlew apiDump`.
 - A default `User-Agent` of `ollama-kotlin/<version> (<os> <arch>) Kotlin/<version>`, matching the
   shape `ollama-python` sends. The version comes from a generated `BuildInfo` constant so it cannot
   drift from the published coordinates. Overridable via `OllamaClientConfig.headers`.
