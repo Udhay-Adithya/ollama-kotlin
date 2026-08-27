@@ -619,23 +619,38 @@ try {
 
 ## Runtime Options
 
-Pass model runtime options (temperature, top_k, etc.) as JSON:
+`Options` carries the documented model options as typed fields. Only the ones you set are sent:
 
 ```kotlin
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
+import org.udhay.ollama.api.Options
 
 val response = client.generate(
     GenerateRequest(
         model = "llama3",
         prompt = "Be creative!",
-        options = buildJsonObject {
-            put("temperature", 1.2)
-            put("top_k", 50)
-            put("top_p", 0.9)
-            put("num_ctx", 4096)
-        }
+        options = Options(
+            temperature = 1.2,
+            topK = 50,
+            topP = 0.9,
+            numCtx = 4096
+        )
     )
+)
+```
+
+Kotlin names are camelCase; they serialize to the snake_case the API expects (`numCtx` →
+`num_ctx`). Load-time options (`numGpu`, `useMlock`, `numThread`, ...) and sampling options
+(`seed`, `numPredict`, `repeatPenalty`, `mirostat`, `stop`, ...) are all present.
+
+For an option newer than this library, use `extra` — it is merged into the same JSON object rather
+than nested:
+
+```kotlin
+import kotlinx.serialization.json.JsonPrimitive
+
+options = Options(
+    temperature = 0.2,
+    extra = mapOf("some_new_option" to JsonPrimitive(true))
 )
 ```
 
