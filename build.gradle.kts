@@ -3,6 +3,7 @@ plugins {
     kotlin("plugin.serialization") version "2.2.21"
     id("org.jetbrains.dokka") version "2.0.0"
     id("com.vanniktech.maven.publish") version "0.36.0"
+    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.18.1"
 }
 
 repositories {
