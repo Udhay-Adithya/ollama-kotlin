@@ -132,6 +132,21 @@ public data class DeleteRequest(
 /**
  * Request body for `POST /api/create` to create a new model.
  *
+ * Exactly one of [fromModel] or [files] must be set — the server rejects a request carrying
+ * neither with `neither 'from' or 'files' was specified`.
+ *
+ * To build a model from a local GGUF, upload it first and pass the returned digest:
+ *
+ * ```kotlin
+ * val digest = client.createBlob(Path.of("/models/my-model.gguf"))
+ * client.create(
+ *     CreateRequest(
+ *         model = "my-model",
+ *         files = mapOf("my-model.gguf" to digest),
+ *     )
+ * )
+ * ```
+ *
  * @property model Name for the new model.
  * @property fromModel Base model to derive from (maps to the `from` JSON field).
  * @property quantize Target quantization level (e.g. `"q4_0"`).
@@ -140,7 +155,9 @@ public data class DeleteRequest(
  * @property system System prompt override.
  * @property parameters Model parameters as JSON.
  * @property messages Default conversation messages.
- * @property adapters Adapter layers as JSON.
+ * @property files File name to blob digest, for creating a model from local weights. Digests come
+ *   from [org.udhay.ollama.OllamaClient.createBlob].
+ * @property adapters Adapter file name to blob digest, in the same form as [files].
  * @property stream Whether to stream progress updates (`true`) or wait for completion.
  *   Ignored by the one-shot client methods, which always send `false`.
  */
@@ -155,7 +172,8 @@ public data class CreateRequest(
     val system: String? = null,
     val parameters: JsonElement? = null,
     val messages: List<Message>? = null,
-    val adapters: JsonElement? = null,
+    val files: Map<String, String>? = null,
+    val adapters: Map<String, String>? = null,
     val stream: Boolean? = null,
 )
 
