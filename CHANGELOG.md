@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   through a proxy or gateway.
 
 ### Added
+- A default `User-Agent` of `ollama-kotlin/<version> (<os> <arch>) Kotlin/<version>`, matching the
+  shape `ollama-python` sends. The version comes from a generated `BuildInfo` constant so it cannot
+  drift from the published coordinates. Overridable via `OllamaClientConfig.headers`.
+- `OllamaClientConfig.followRedirects` (default `true`). Ktor fixes redirect handling when the
+  client is built rather than per request, so it is read from the config passed at construction;
+  the `configProvider` constructor takes it as a parameter.
 - `blobExists(digest)` wrapping `HEAD /api/blobs/:digest`. `createBlob(path)` now consults it first
   and skips the upload when the server already holds the blob, so re-running a create flow does not
   re-send gigabytes. Pass `skipIfPresent = false` to always upload.
